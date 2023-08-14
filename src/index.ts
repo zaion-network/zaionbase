@@ -4,6 +4,7 @@ import { DeeperUtilities as DrU } from "./DeeperUtilities";
 import { DeepUtilities as DU } from "./using DeeperUtilities/DeepUtilities";
 import { TopUtilities as TU } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/using HigherUtilities/TopUtilities";
 import { HigherUtilities as HU } from "/Users/WAW/Documents/Projects/zaion-network-state/packages/zaionbase/src/using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/HigherUtilites";
+export { tester } from "./utils/tester";
 
 export import Update = U;
 export import Scan = S;
