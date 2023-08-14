@@ -28,3 +28,22 @@ checkout({ b: true, newBranch: "any" });
 checkout({ B: true, newBranch: "any" });
 checkout({ orphan: true, newBranch: "any", startPoint: "here" });
 checkout({ commit: "", detach: true });
+checkout({});
+
+enum subCommands {
+  a = "a",
+  b = "b",
+}
+type Ops<S> = S extends typeof subCommands.a
+  ? { sub: typeof subCommands.a; a_arg: string }
+  : S extends typeof subCommands.b
+  ? { sub: typeof subCommands.b; b_arg: string }
+  : { sub?: S };
+interface subCommand {
+  <S>(ops: Ops<S>): void;
+}
+const sub: subCommand = ops => {};
+
+sub({ sub: subCommands.a, a_arg: "" });
+sub({ sub: subCommands.b, b_arg: "" });
+sub({});
