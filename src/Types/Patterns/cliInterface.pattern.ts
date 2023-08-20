@@ -42,7 +42,9 @@ type Ops<S> = S extends typeof subCommands.a
 interface subCommand {
   <S>(ops: Ops<S>): void;
 }
-const sub: subCommand = ops => {};
+const sub: subCommand = ops => {
+  ops;
+};
 
 sub({ sub: subCommands.a, a_arg: "" });
 sub({ sub: subCommands.b, b_arg: "" });
