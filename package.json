@@ -6,6 +6,10 @@
   "source": "src/index.ts",
   "main": "dist/zaionstate-zaionbase.cjs.js",
   "module": "dist/zaionstate-zaionbase.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaion-network/zaionbase.git"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "fix:pre": "preconstruct fix",
