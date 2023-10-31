@@ -24,6 +24,7 @@ declare module "../../../../../../JavaScript" {
       sliceArray: IsliceArray_v1;
       subtractArrays_v1: IsubtractArrays_v1;
       deepEquals: deepEquals;
+      difference: difference;
     }
     namespace ArrayUtils {
       namespace MapCallbacks {}
@@ -116,6 +117,18 @@ declare module "./ArrayUtils" {
 
   interface deepEquals {
     <A, B>(options: { a: A[]; b: B | A[] }): boolean;
+  }
+
+  interface difference {
+    <A, B, I>({
+      type,
+      array1,
+      array2,
+    }: {
+      type: "simple";
+      array1: A[];
+      array2: B[];
+    }): I[];
   }
 
   namespace MapCallbacks {
@@ -855,6 +868,23 @@ export const deepEquals: deepEquals = function deepEquals(options) {
     return true;
   }
   return false;
+};
+
+export const difference: difference = ({
+  type,
+  array1,
+  array2,
+}: {
+  type: "simple";
+  array1: any[];
+  array2: any[];
+}) => {
+  if (type === "simple") {
+    let bigger = array1.length > array2.length ? array1 : array2;
+    let smaller = array1.length < array2.length ? array1 : array2;
+    let difference = bigger.filter(x => !smaller.includes(x));
+    return difference;
+  } else throw new Error("il tipo di differenza non esiste");
 };
 
 export namespace MapCallbacks {
