@@ -71,10 +71,6 @@ declare module "./ArrayUtils" {
     (arr1: string[], arr2: string[]): string[];
   }
 
-  interface deepEquals {
-    <A, B>(options: { a: A[]; b: B | A[] }): boolean;
-  }
-
   interface IcheckObjectConstructor_v1 {
     (object: object, constructor: Function): boolean;
   }
@@ -117,6 +113,10 @@ declare module "./ArrayUtils" {
   type splicer = (
     content: string[]
   ) => (i: number, e: number, arr: string[]) => string[];
+
+  interface deepEquals {
+    <A, B>(options: { a: A[]; b: B | A[] }): boolean;
+  }
 
   namespace MapCallbacks {
     type conditionIndexTuple = [boolean, number];
