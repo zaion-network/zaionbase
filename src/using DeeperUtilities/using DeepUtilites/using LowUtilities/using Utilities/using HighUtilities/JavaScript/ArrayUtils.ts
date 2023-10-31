@@ -50,6 +50,7 @@ declare module "./ArrayUtils" {
   interface IhasArrayObjectElements_v1 {
     (array: object[]): boolean | string;
   }
+
   interface IisArrayEmpty_v1 {
     (a: any): any;
   }
@@ -57,15 +58,19 @@ declare module "./ArrayUtils" {
   interface IpopFirst_v1 {
     (a: any): any;
   }
+
   interface IremoveSpaceFromString_v1 {
     (type: number, string: string): string;
   }
+
   interface IsliceArray_v1 {
     <T>(size: number, array: T): T[][] | string;
   }
+
   interface IsubtractArrays_v1 {
     (arr1: string[], arr2: string[]): string[];
   }
+
   interface deepEquals {
     <A, B>(options: { a: A[]; b: B | A[] }): boolean;
   }
