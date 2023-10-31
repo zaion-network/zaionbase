@@ -23,6 +23,7 @@ declare module "../../../../../../JavaScript" {
       removeSpaceFromString: IremoveSpaceFromString_v1;
       sliceArray: IsliceArray_v1;
       subtractArrays_v1: IsubtractArrays_v1;
+      deepEquals: deepEquals;
     }
     namespace ArrayUtils {
       namespace MapCallbacks {}
@@ -64,6 +65,9 @@ declare module "./ArrayUtils" {
   }
   interface IsubtractArrays_v1 {
     (arr1: string[], arr2: string[]): string[];
+  }
+  interface deepEquals {
+    <A, B>(options: { a: A[]; b: B | A[] }): boolean;
   }
 
   interface IcheckObjectConstructor_v1 {
@@ -822,6 +826,32 @@ export const subtractArrays_v1: IsubtractArrays_v1 = function subtractArrays(
     .filter(item => !arr1.includes(item) || !arr2.includes(item));
 };
 
+export const deepEquals: deepEquals = function deepEquals(options) {
+  const { a, b } = options;
+  if (a === b) return true;
+  if (a instanceof Array && b instanceof Array) {
+    if (a.length != b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEquals({ a: a[i] as any, b: b[i] as any })) return false;
+    }
+    return true;
+  }
+  if (a instanceof Object && b instanceof Object) {
+    for (let key in a) {
+      if (
+        !(key in b) ||
+        !deepEquals({ a: a[key] as any[], b: b[key] as any[] })
+      )
+        return false;
+    }
+    for (let key in b) {
+      if (!(key in a)) return false;
+    }
+    return true;
+  }
+  return false;
+};
+
 export namespace MapCallbacks {
   export const replacer: replacer = (target, source) => e =>
     e.replace(target, source);
@@ -957,8 +987,6 @@ export namespace SortCallbacks {
   >(a: T, b: T, index: number): number | undefined {
     if (typeof a[index] !== "number" && typeof b[index] !== "number") return;
 
-    // TODO errore TS
-    // @ts-expect-error
     return b[index] - a[index];
   };
 }
