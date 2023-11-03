@@ -6,12 +6,12 @@ tester(() => {
     constructor(public value: V) {}
   }
 
-  const Flyingable: _Flyingable = (ctor) =>
+  const Flyingable: _Flyingable = ctor =>
     class extends ctor {
       fly = () => console.log(`fly ${this.value.name}`);
     };
 
-  const Chaseable: _Chaseable = (ctor) =>
+  const Chaseable: _Chaseable = ctor =>
     class extends ctor {
       chase = () => console.log(`${this.value.name} is chasing`);
     };
@@ -72,7 +72,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Graphable: GraphableType = (ctor) => {
+  const Graphable: GraphableType = ctor => {
     return class Graph extends ctor implements IGraphable {
       node: string[] = [];
       constructor(...args: any[]) {
@@ -98,7 +98,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Nodable: NodableType = (ctor) => {
+  const Nodable: NodableType = ctor => {
     return class Duck extends ctor implements INodable {
       child: any[] = [];
       constructor(...args: any[]) {
@@ -158,7 +158,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Graphable: GraphableType = (ctor) => {
+  const Graphable: GraphableType = ctor => {
     return class Graph extends ctor implements IGraphable {
       node: string[] = [];
       constructor(...args: any[]) {
@@ -180,7 +180,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Nodable: NodableType = (ctor) => {
+  const Nodable: NodableType = ctor => {
     return class Duck extends ctor implements INodable {
       child: any[] = [];
       constructor(...args: any[]) {
@@ -238,7 +238,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Graphable: GraphableType = (ctor) => {
+  const Graphable: GraphableType = ctor => {
     return class Graph extends ctor implements IGraphable {
       node: string[] = [];
       constructor(...args: any[]) {
@@ -264,7 +264,7 @@ tester(() => {
   // this is the actual Mixing class. The funciton shall be
   // called with a suffix `able` and the returned class shall
   // have the name of the class without the `able`
-  const Nodable: NodableType = (ctor) => {
+  const Nodable: NodableType = ctor => {
     return class Duck extends ctor implements INodable {
       child: any[] = [];
       constructor(...args: any[]) {
@@ -316,9 +316,10 @@ tester(() => {
 tester(() => {
   class Base {
     name: string;
-    constructor(name: string,
+    constructor(
+      name: string
       //  n: string
-       ) {
+    ) {
       this.name = name;
     }
   }
@@ -329,7 +330,7 @@ tester(() => {
     InstanceType<Nable>,
     InstanceType<Baseable>,
     Baseable
-  > = (goo) => {
+  > = goo => {
     return class N extends goo {
       n: string = "";
       constructor(name: string, n: string) {
@@ -342,7 +343,7 @@ tester(() => {
     InstanceType<Cable>,
     InstanceType<Baseable>,
     Baseable
-  > = (goo) => {
+  > = goo => {
     return class N extends goo {
       c: string = "";
       constructor(name: string, n: string) {
@@ -397,7 +398,7 @@ tester(() => {
   // type Mixins2A = [Oblastable, Onukeable, Obamable, Osamable];
   // type Mixins3 = [Oblast, Onuke, Obama];
 
-  const Oblastable: Oblastable = (ctor) => {
+  const Oblastable: Oblastable = ctor => {
     return class extends ctor {
       blast: boolean = true;
       setBlast(blast: boolean) {
@@ -405,12 +406,12 @@ tester(() => {
       }
     };
   };
-  const Onukeable: Onukeable = (ctor) => {
+  const Onukeable: Onukeable = ctor => {
     return class extends ctor {
       nuke: boolean = true;
     };
   };
-  const Obamable: Obamable = (ctor) => {
+  const Obamable: Obamable = ctor => {
     return class extends ctor {
       bama: boolean = true;
     };
@@ -423,7 +424,7 @@ tester(() => {
   class Mixed extends new Mixins.Mix(Base).with(mixins) {
     ciao = 0;
     constructor(
-      a0: string,
+      a0: string
       // a1?: number,
       // a2?: string,
       // a3?: boolean,
@@ -448,7 +449,7 @@ tester(() => {
     Base
   >;
 
-  const Oblastable: Oblastable = (ctor) => {
+  const Oblastable: Oblastable = ctor => {
     return class extends ctor {
       #blast: boolean = true;
       set blast(blast: boolean) {
@@ -468,7 +469,7 @@ tester(() => {
     InstanceType<Base>,
     Base
   >;
-  const Onukeable: Onukeable = (ctor) => {
+  const Onukeable: Onukeable = ctor => {
     return class extends ctor {
       nuke: boolean = true;
       setNuke(nuke: boolean) {
@@ -478,7 +479,7 @@ tester(() => {
   };
 
   type Obamable = Mixins.mixin<{ bama: boolean }, InstanceType<Base>, Base>;
-  const Obamable: Obamable = (ctor) => {
+  const Obamable: Obamable = ctor => {
     return class extends ctor {
       // questo pattern rende invisibile il membro nel
       // console
@@ -491,7 +492,7 @@ tester(() => {
   };
 
   type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
-  const Osamable: Osamable = (ctor) => {
+  const Osamable: Osamable = ctor => {
     return class extends ctor {
       sama = true;
     };
@@ -503,12 +504,12 @@ tester(() => {
     static cli = "cli";
   };
 
-  class Mixed extends new MixEvo(Base).with(
+  class Mixed extends new MixEvo(Base).with([
     Oblastable,
     Onukeable,
     Obamable,
-    Osamable
-  ) {
+    Osamable,
+  ]) {
     ciao = 0;
     constructor() {
       super();
@@ -529,4 +530,34 @@ tester(() => {
   console.log(mixed.sama);
   console.log(mixed.ciao);
   console.log(Mixed.member);
+  // @ts-expect-error cosi non funziona
+  console.log(Mixed.cli);
+})(true);
+
+tester(() => {
+  const MixEvo = Mixins.Mix;
+  type Base = new () => { gnamgnam: string | null };
+  const Base: Base = class {
+    gnamgnam = null;
+    static cli = "cli";
+  };
+
+  type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
+  const Osamable: Osamable = ctor => {
+    return class extends ctor {
+      sama = true;
+    };
+  };
+  class Mixed extends new MixEvo(Base).with(Osamable) {
+    ciao = 0;
+    constructor(ciao: number, sama: boolean, gnamgnam: string) {
+      super();
+      this.ciao = ciao;
+      this.sama = sama;
+      this.gnamgnam = gnamgnam;
+    }
+    static member = "ciao";
+  }
+  const mixed = new Mixed(1000, false, "ulllaa");
+  console.log(mixed);
 })(true);
