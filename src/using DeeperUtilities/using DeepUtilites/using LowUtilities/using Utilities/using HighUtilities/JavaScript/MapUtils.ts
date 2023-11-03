@@ -1,4 +1,4 @@
-import "../../../../../../JavaScript";
+// import "../../../../../../JavaScript";
 import { MethodWithStrategies } from "../../../MethodWithStrategy";
 
 declare module "../../../../../../JavaScript" {
@@ -10,9 +10,14 @@ declare module "../../../../../../JavaScript" {
   }
 }
 declare module "./MapUtils" {
-  interface stringifyMap {
+  interface stringifier {
     (map: Map<unknown, unknown>): string;
   }
+
+  interface stringifyMap {
+    (map: Map<unknown, unknown>, type?: "object" | "array"): string;
+  }
+
   interface NonNullableMap<K, V> extends Map<K, V> {
     get(key: K): NonNullable<V>;
   }
@@ -49,9 +54,6 @@ export namespace MapUtils {
       return value as NonNullable<V>;
     }
   }
-
-  export const stringifyMap: stringifyMap = map =>
-    JSON.stringify(Array.from(map));
 
   export namespace parseMapFromJsonStrategy {
     export class MapFromJson<
@@ -104,6 +106,19 @@ export namespace MapUtils {
   }
 }
 
+
+export const stringifyMapArray: stringifier = map =>
+  JSON.stringify(Array.from(map));
+
+export const stringifyMapObj: stringifier = map =>
+  JSON.stringify(Object.fromEntries(map));
+
+export const stringifyMap: stringifyMap = (map, type = "array") => {
+  if (type === "array") return stringifyMapArray(map);
+  else if (type === "object") return stringifyMapObj(map);
+  else throw new Error();
+};
+
 export abstract class NonNullableMap<K, V> extends Map<K, V> {
   get(key: K): NonNullable<V> {
     const value = super.get(key);
@@ -113,9 +128,6 @@ export abstract class NonNullableMap<K, V> extends Map<K, V> {
     return value as NonNullable<V>;
   }
 }
-
-export const stringifyMap: stringifyMap = map =>
-  JSON.stringify(Array.from(map));
 
 export namespace parseMapFromJsonStrategy {
   export class MapFromJson<
