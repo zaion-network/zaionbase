@@ -23,3 +23,13 @@ describe("stringifyMap object behave", () => {
   });
 });
 
+describe("ExtendedMap", () => {
+  it("dovrebe creare una classe che ha come mettodo stringify", () => {
+    const map = new ExtendedMap();
+    map.set("ciao", "mamma");
+    map.set("bella", "ciao");
+    const EXPECTED = `{"ciao":"mamma","bella":"ciao"}`;
+    const result = map.stringify();
+    expect(result).toEqual(EXPECTED);
+  });
+});
