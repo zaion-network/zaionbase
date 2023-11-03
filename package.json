@@ -5,10 +5,19 @@
   "description": "Zaion Zaionbase",
   "source": "src/index.ts",
   "types": "src/index.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/zaion-network/zaionbase.git"
   },
+  "exports": {
+    "./map": {
+      "default": "./dist/map/index.js"
+    }
+  },
+  "files": [
+    "map"
+  ],
   "scripts": {
     "build": "./build.ts"
   },
