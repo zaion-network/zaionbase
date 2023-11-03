@@ -35,6 +35,8 @@ import {
   substituteEditedPart,
   subtractArrays_v1,
   TupleArray,
+  deepEquals,
+  difference,
 } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/JavaScript/ArrayUtils";
 import { stringifyMap } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/JavaScript/MapUtils";
 import { BasicClass } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/JavaScript/ClassUtils";
@@ -168,6 +170,8 @@ export const ArrayUtils: JavaScript.ArrayUtils = {
   substituteEditedPart,
   subtractArrays_v1,
   TupleArray,
+  deepEquals,
+  difference,
 };
 export const MapUtils: JavaScript.MapUtils = {
   stringifyMap,
