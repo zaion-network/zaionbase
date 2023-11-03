@@ -6,10 +6,7 @@ declare module "./Mixins" {
   type GConstructor<T> = FunctionTypes.Ctors.GConstructor<T>;
 
   type reduce = <
-    T extends [
-      new (...args: any) => any,
-      ...Mixins.mixin<any, any, any>[]
-    ]
+    T extends [new (...args: any) => any, ...Mixins.mixin<any, any, any>[]]
   >(
     arr: T
   ) => Mixins.inferTuple<T>;
@@ -18,6 +15,11 @@ declare module "./Mixins" {
     type GConstructor<T> = FunctionTypes.Ctors.GConstructor<T>;
     type Ctor<C extends readonly any[], T> = FunctionTypes.Ctors.Ctor<C, T>;
 
+    /**
+     * @param {unknown} I é l'interfaccia del mixin
+     * @param {unknown} Base é l'interfaccia dell'istanza del costruttore
+     * @param {unknown} Ctor é l'interfaccia del costruttore
+     */
     interface mixin<
       I extends unknown,
       Base,
@@ -100,6 +102,13 @@ export namespace Mixins {
         ? inferTuple<[C, ...M]>
         : never
       : never;
+    with<M extends mixin<any, any, any>>(
+      args: M
+    ): C extends Ctor<any, any>
+      ? M extends mixin<any, any, any>
+        ? flattenMixing<C, M>
+        : never
+      : never;
     with<
       M extends [
         mixin<any, any, any>,
@@ -116,9 +125,15 @@ export namespace Mixins {
         : never
       : never {
       if (Array.isArray(args)) {
+        // this should be called when an array is passed
         const tuple: [C, ...M] = [this.ctor, ...args];
         return reduce(tuple);
+      } else if (args.length === 1) {
+        // this should be called when only one mixins is passed
+        const tuple = [this.ctor, args];
+        return reduce(tuple as [C, ...M]);
       } else {
+        // this should be called when mulitple mixins are passed
         const tuple = [this.ctor, args, ...rest];
         return reduce(tuple as [C, ...M]);
       }
@@ -129,48 +144,3 @@ export namespace Mixins {
   export namespace Mix {}
   export namespace MixCb {}
 }
-
-// type GRecordCtor<C extends any[], V> = FunctionTypes.Ctors.GRecordCtor<C, V>;
-// type GenericRecord<V, K extends string = string> = Types.Record.GenericRecord<
-//   V,
-//   K
-// >;
-
-// interface mixinGRecord<
-//   V,
-//   I extends unknown,
-//   Base extends GenericRecord<V>,
-//   Ctor extends GRecordCtor<any[], V>
-// > {
-//   (ctor: Ctor): new (...args: ConstructorParameters<Ctor>) => I & Base;
-// }
-
-// interface mixin<I extends unknown, Base> {
-//   <Ctor extends new (...args: any[]) => Base>(ctor: Ctor): new (
-//     ...args: ConstructorParameters<Ctor>
-//   ) => I & Base;
-// }
-// type Bable = mixin<{ b: number }, { value: unknown }>;
-// const Bable: Bable = (ctor) =>
-//   class extends ctor {
-//     b: number = 0;
-//   };
-
-// class Babushka extends Bable(
-//   class<V> {
-//     value: V;
-//     constructor(value: V) {
-//       this.value = value;
-//     }
-//   }
-// ) {
-//   constructor(
-//     // prop: { name: string }
-//     ) {
-//     super({ name: "" });
-//     this.value;
-//   }
-// }
-// const pollonellecampagne = new Babushka(
-//   // { name: "" }
-//   );
