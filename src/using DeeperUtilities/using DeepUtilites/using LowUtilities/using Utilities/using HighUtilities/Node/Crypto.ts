@@ -1,4 +1,5 @@
 import { createHash, createHmac } from "crypto";
+import { hmacIt as hm } from "./Crypto/hmacit";
 import "../../../../../../Node";
 
 declare module "./Crypto" {
@@ -24,8 +25,7 @@ declare module "../../../../../../Node" {
   }
 }
 
-export const hmacIt: hmacIt.hmacIt = (secret: string, value: string) =>
-  createHmac("sha256", secret).update(value).digest("hex");
+export const hmacIt: hmacIt.hmacIt = hm;
 
 export const hashIt: hashIt.hashIt = string => {
   const hash = createHash("sha256");
