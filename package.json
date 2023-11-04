@@ -11,12 +11,26 @@
     "url": "https://github.com/zaion-network/zaionbase.git"
   },
   "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./scr/index.ts"
+    },
     "./map": {
-      "default": "./dist/map/index.js"
+      "default": "./dist/map/index.js",
+      "types": "./map/index.ts"
+    },
+    "./crypto": {
+      "default": "./dist/crypto/index.js",
+      "types": "./crypto/index.ts"
+    },
+    "./array": {
+      "default": "./dist/array/index.js",
+      "types": "./array/index.ts"
     }
   },
   "files": [
-    "map"
+    "map",
+    "array"
   ],
   "scripts": {
     "build": "./build.ts"
