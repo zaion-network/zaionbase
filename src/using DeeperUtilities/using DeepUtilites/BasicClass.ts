@@ -8,6 +8,7 @@ export namespace BasicClass {
   export type actionAndArgs = C.actionAndArgs;
   export type GenericFunction<A extends any[], R> = C.GenericFunction<A, R>;
   export const Conditioner = C;
-  // export const makeValidations = DeepUtilities.Conditioner.makeValidations;
+
+  // export const makeValidations = C.makeValidations;
   // export const makeActionAndArgs = DeepUtilities.Conditioner.makeActionAndArgs;
 }

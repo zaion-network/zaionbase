@@ -1,6 +1,11 @@
+import { describe, it, expect } from "bun:test";
 import { ExecSync } from "./ExecSync";
 
-const exe = new ExecSync("ls", { maxBuffer: 1024 });
-exe.run().format().split(ExecSync.splitters.newline);
+describe(`${ExecSync.name}`, () => {
+  it("test1", () => {
+    const exe = new ExecSync("ls", { maxBuffer: 1024 });
+    exe.run().format().split(ExecSync.splitters.newline);
 
-console.log(exe.digest());
+    console.log(exe.digest());
+  });
+});

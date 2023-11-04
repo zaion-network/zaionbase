@@ -3,16 +3,18 @@ import { Application as A } from "./Application";
 import { JavaScript as J } from "./JavaScript";
 import { Node as N } from "./Node";
 
-declare module "./Application" {}
-declare module "./JavaScript" {}
-declare module "./Node" {}
+// declare module "./Application" {}
+// declare module "./JavaScript" {}
+// declare module "./Node" {}
 declare module "../HighUtilities" {
-  export namespace HighUtilities {
+  namespace HighUtilities {
     export import Application = A;
     export import JavaScript = J;
     export import Node = N;
   }
 }
+// console.log(H, "--------");
+
 H.Application = A;
 H.JavaScript = J;
 H.Node = N;

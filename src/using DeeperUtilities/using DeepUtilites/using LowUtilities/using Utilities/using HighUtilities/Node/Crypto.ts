@@ -1,6 +1,6 @@
 import { createHash, createHmac } from "crypto";
-import { hmacIt as hm } from "./Crypto/hmacit";
-import "../../../../../../Node";
+// import { hmacIt as hm } from "./Crypto/hmacit";
+// import "../../../../../../Node";
 
 declare module "./Crypto" {
   namespace hmacIt {
@@ -15,17 +15,18 @@ declare module "./Crypto" {
   }
 }
 
-declare module "../../../../../../Node" {
-  namespace Node {
-    interface Crypto {
-      hmacIt: hmacIt.hmacIt;
-      hashIt: hashIt.hashIt;
-    }
-    namespace Crypto {}
-  }
-}
+// // declare module "../../../../../../Node" {
+// //   namespace Node {
+// //     interface Crypto {
+// //       hmacIt: hmacIt.hmacIt;
+// //       hashIt: hashIt.hashIt;
+// //     }
+// //     namespace Crypto {}
+// //   }
+// // }
 
-export const hmacIt: hmacIt.hmacIt = hm;
+export const hmacIt: hmacIt.hmacIt = (secret: string, value: string) =>
+  createHmac("sha256", secret).update(value).digest("hex");
 
 export const hashIt: hashIt.hashIt = string => {
   const hash = createHash("sha256");
@@ -39,7 +40,6 @@ export class Crypto {}
 export namespace Crypto {
   export const hmacIt: hmacIt.hmacIt = (secret: string, value: string) =>
     createHmac("sha256", secret).update(value).digest("hex");
-
   export const hashIt: hashIt.hashIt = string => {
     const hash = createHash("sha256");
     hash.update(string);

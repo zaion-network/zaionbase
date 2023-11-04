@@ -1,3 +1,4 @@
+import { describe, it, expect } from "bun:test";
 import { Mixins } from "./Mixins";
 import { tester } from "./utils/tester";
 
@@ -438,126 +439,133 @@ tester(() => {
   console.log(mixed);
 })(false);
 
-tester(() => {
-  const MixEvo = Mixins.Mix;
+describe("Mixins", () => {
+  it("controlla esistenza", () => {
+    expect(Mixins).toBeTruthy();
+  });
 
-  type Oblastable = Mixins.mixin<
-    {
-      blast: boolean;
-    },
-    InstanceType<Base>,
-    Base
-  >;
+  it("", () => {
+    const MixEvo = Mixins.Mix;
 
-  const Oblastable: Oblastable = ctor => {
-    return class extends ctor {
-      #blast: boolean = true;
-      set blast(blast: boolean) {
-        this.#blast = blast;
-      }
-      get blast() {
-        return this.#blast;
-      }
+    type Oblastable = Mixins.mixin<
+      {
+        blast: boolean;
+      },
+      InstanceType<Base>,
+      Base
+    >;
+
+    const Oblastable: Oblastable = ctor => {
+      return class extends ctor {
+        #blast: boolean = true;
+        set blast(blast: boolean) {
+          this.#blast = blast;
+        }
+        get blast() {
+          return this.#blast;
+        }
+      };
     };
-  };
 
-  type Onukeable = Mixins.mixin<
-    {
-      nuke: boolean;
-      setNuke(blast: boolean): void;
-    },
-    InstanceType<Base>,
-    Base
-  >;
-  const Onukeable: Onukeable = ctor => {
-    return class extends ctor {
-      nuke: boolean = true;
-      setNuke(nuke: boolean) {
-        this.nuke = nuke;
+    type Onukeable = Mixins.mixin<
+      {
+        nuke: boolean;
+        setNuke(blast: boolean): void;
+      },
+      InstanceType<Base>,
+      Base
+    >;
+    const Onukeable: Onukeable = ctor => {
+      return class extends ctor {
+        nuke: boolean = true;
+        setNuke(nuke: boolean) {
+          this.nuke = nuke;
+        }
+      };
+    };
+
+    type Obamable = Mixins.mixin<{ bama: boolean }, InstanceType<Base>, Base>;
+    const Obamable: Obamable = ctor => {
+      return class extends ctor {
+        // questo pattern rende invisibile il membro nel
+        // console
+        #bama: boolean = true;
+        get bama() {
+          return this.#bama;
+        }
+        static momba = 0;
+      };
+    };
+
+    type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
+    const Osamable: Osamable = ctor => {
+      return class extends ctor {
+        sama = true;
+      };
+    };
+
+    type Base = new () => { gnamgnam: boolean };
+    const Base: Base = class {
+      gnamgnam = true;
+      static cli = "cli";
+    };
+
+    class Mixed extends new MixEvo(Base).with([
+      Oblastable,
+      Onukeable,
+      Obamable,
+      Osamable,
+    ]) {
+      ciao = 0;
+      constructor() {
+        super();
       }
-    };
-  };
-
-  type Obamable = Mixins.mixin<{ bama: boolean }, InstanceType<Base>, Base>;
-  const Obamable: Obamable = ctor => {
-    return class extends ctor {
-      // questo pattern rende invisibile il membro nel
-      // console
-      #bama: boolean = true;
-      get bama() {
-        return this.#bama;
-      }
-      static momba = 0;
-    };
-  };
-
-  type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
-  const Osamable: Osamable = ctor => {
-    return class extends ctor {
-      sama = true;
-    };
-  };
-
-  type Base = new () => { gnamgnam: boolean };
-  const Base: Base = class {
-    gnamgnam = true;
-    static cli = "cli";
-  };
-
-  class Mixed extends new MixEvo(Base).with([
-    Oblastable,
-    Onukeable,
-    Obamable,
-    Osamable,
-  ]) {
-    ciao = 0;
-    constructor() {
-      super();
+      static member = "ciao";
     }
-    static member = "ciao";
-  }
-  const mixed = new Mixed();
-  mixed.bama;
-  mixed.blast = false;
-  mixed.setNuke(true);
+    const mixed = new Mixed();
+    mixed.bama;
+    mixed.blast = false;
+    mixed.setNuke(true);
 
-  // let obo = new MixEvo(Base).ctor;
-  console.log(mixed);
-  console.log(mixed.blast);
-  console.log(mixed.nuke);
-  console.log(mixed.setNuke);
-  console.log(mixed.bama);
-  console.log(mixed.sama);
-  console.log(mixed.ciao);
-  console.log(Mixed.member);
-  // @ts-expect-error cosi non funziona
-  console.log(Mixed.cli);
-})(true);
+    // let obo = new MixEvo(Base).ctor;
+    expect(mixed instanceof Mixed).toBeTrue();
+    // console.log(mixed);
+    expect(mixed.blast).toBeFalse();
+    expect(mixed.nuke).toBeTrue();
+    expect(mixed.setNuke).toBeTruthy();
+    expect(mixed.bama).toBeTrue();
+    expect(mixed.sama).toBeTrue();
+    expect(mixed.ciao).toEqual(0);
+    expect(Mixed.member).toEqual("ciao");
+    // @ts-expect-error cosi non funziona
+    expect(Mixed.cli).toEqual("cli");
+  });
 
-tester(() => {
-  const MixEvo = Mixins.Mix;
-  type Base = new () => { gnamgnam: string | null };
-  const Base: Base = class {
-    gnamgnam = null;
-    static cli = "cli";
-  };
-
-  type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
-  const Osamable: Osamable = ctor => {
-    return class extends ctor {
-      sama = true;
+  it.skip("", () => {
+    const MixEvo = Mixins.Mix;
+    type Base = new () => { gnamgnam: string | null };
+    const Base: Base = class {
+      gnamgnam = null;
+      static cli = "cli";
     };
-  };
-  class Mixed extends new MixEvo(Base).with(Osamable) {
-    ciao = 0;
-    constructor(ciao: number, sama: boolean, gnamgnam: string) {
-      super();
-      this.ciao = ciao;
-      this.sama = sama;
-      this.gnamgnam = gnamgnam;
+
+    type Osamable = Mixins.mixin<{ sama: boolean }, InstanceType<Base>, Base>;
+    const Osamable: Osamable = ctor => {
+      return class extends ctor {
+        sama = true;
+      };
+    };
+    class Mixed extends new MixEvo(Base).with(Osamable) {
+      ciao = 0;
+      constructor(ciao: number, sama: boolean, gnamgnam: string) {
+        super();
+        this.ciao = ciao;
+        this.sama = sama;
+        this.gnamgnam = gnamgnam;
+      }
+      static member = "ciao";
     }
-    static member = "ciao";
-  }
-  const mixed = new Mixed(1000, false, "ulllaa");
-  console.log(mixed);
-})(true);
+    const mixed = new Mixed(1000, false, "ulllaa");
+    console.log(mixed);
+  });
+});

@@ -1,8 +1,8 @@
 import { Utilities } from "./Utilities";
+import { describe, it, expect } from "bun:test";
 
-// const map = new Map();
-// map.set(1, "ciao");
-// map.set(2, "miao");
-// const string = Utilities.MapUtils.stringifyMap(map);
-// console.log(string);
-console.log(Utilities.Action);
+describe(`${Utilities.name}`, () => {
+  it("controlla presenza elementi", () => {
+    expect(Utilities).toBeTruthy();
+  });
+});

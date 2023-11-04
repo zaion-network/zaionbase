@@ -1,13 +1,15 @@
+import { describe, it, expect } from "bun:test";
 import { JSONUtils } from "./JSONUtils";
 
-const isJsonTest = async () => {
-  const res1 = await JSONUtils.validateJson("ciao mamma");
-  const res2 = await JSONUtils.validateJson("{mamma:'ciao'}");
-  const res3 = await JSONUtils.validateJson("{'mamma':'ciao'}");
-  const res4 = await JSONUtils.validateJson('{"mamma":"ciao"}');
-  console.log(res1);
-  console.log(res2);
-  console.log(res3);
-  console.log(res4);
-};
-isJsonTest();
+describe(`${JSONUtils.name}`, () => {
+  it("test1", async () => {
+    const res1 = await JSONUtils.validateJson("ciao mamma");
+    const res2 = await JSONUtils.validateJson("{mamma:'ciao'}");
+    const res3 = await JSONUtils.validateJson("{'mamma':'ciao'}");
+    const res4 = await JSONUtils.validateJson('{"mamma":"ciao"}');
+    expect(res1).toBeFalse();
+    expect(res2).toBeFalse();
+    expect(res3).toBeFalse();
+    expect(res4).toEqual({ mamma: "ciao" });
+  });
+});

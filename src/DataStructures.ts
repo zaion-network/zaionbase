@@ -7,10 +7,10 @@
 
 declare module "./DataStructures" {
   export namespace DataStructures {
-    export interface Tuple<T extends any[], V> {
+    export interface WrongTuple<T extends any[], V> {
       arr: T;
     }
-    export namespace Tuple {
+    export namespace WrongTuple {
       export type AddToTuple<T extends any[], U> = [...T, U];
       type Tuple<T extends unknown[]> = [...T];
 
@@ -30,20 +30,23 @@ declare module "./DataStructures" {
 
 export class DataStructures {}
 export namespace DataStructures {
-  type foo = <T extends any[], U>(arr: T, value: U) => Tuple.AddToTuple<T, U>;
+  type foo = <T extends any[], U>(
+    arr: T,
+    value: U
+  ) => WrongTuple.AddToTuple<T, U>;
   const foo: foo = (arr, value) => [...arr, value];
 
-  export class Tuple2<V, T extends any[] = [V]> {
+  export class Tuple<V, T extends any[] = [V]> {
     arr: T;
     constructor(value: V) {
       this.arr = [value] as T;
     }
     push<A>(
-      this: Tuple2<any, T> | Tuple2<any, Tuple.AddToTuple<T, A>>,
+      this: Tuple<any, T> | Tuple<any, WrongTuple.AddToTuple<T, A>>,
       value: A
     ) {
-      this.arr = foo((this as Tuple2<any, T>).arr, value);
-      return this as Tuple2<any, Tuple.AddToTuple<T, A>>;
+      this.arr = foo((this as Tuple<any, T>).arr, value);
+      return this as Tuple<any, WrongTuple.AddToTuple<T, A>>;
     }
     tupleReduce = <C, R>(
       callback: (
@@ -53,20 +56,21 @@ export namespace DataStructures {
         tuple?: T
       ) => R,
       initialValue: C
-    ): R => Tuple.tupleReduce<T, C, R>(this.arr, callback, initialValue);
+    ): R => WrongTuple.tupleReduce<T, C, R>(this.arr, callback, initialValue);
   }
-  export class Tuple<T extends any[], V extends [...T] = [...T]>
-    implements Tuple<T>
+  export class WrongTuple<T extends any[], V extends [...T] = [...T]>
+    implements WrongTuple<T>
   {
     value: V;
     constructor(public arr: T) {
       this.value = [...arr] as V;
     }
 
-    add<U>(e: U): Tuple<Tuple.AddToTuple<T, U>> {
-      return new Tuple<Tuple.AddToTuple<T, U>>([...this.arr, e]) as Tuple<
-        Tuple.AddToTuple<T, U>
-      >;
+    add<U>(e: U): WrongTuple<WrongTuple.AddToTuple<T, U>> {
+      return new WrongTuple<WrongTuple.AddToTuple<T, U>>([
+        ...this.arr,
+        e,
+      ]) as WrongTuple<WrongTuple.AddToTuple<T, U>>;
     }
 
     tupleReduce = <C, R>(
@@ -77,9 +81,9 @@ export namespace DataStructures {
         tuple?: T
       ) => R,
       initialValue: C
-    ): R => Tuple.tupleReduce<T, C, R>(this.arr, callback, initialValue);
+    ): R => WrongTuple.tupleReduce<T, C, R>(this.arr, callback, initialValue);
   }
-  export namespace Tuple {
+  export namespace WrongTuple {
     export const tupleReduce: TupleRedux = <T extends any[], C, R>(
       tuple: T,
       callback: (

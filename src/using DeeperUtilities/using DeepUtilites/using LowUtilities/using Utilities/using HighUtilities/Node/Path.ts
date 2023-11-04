@@ -1,5 +1,4 @@
 import { basename, join } from "path";
-import "../../../../../../Node";
 
 declare module "./Path" {
   interface ifUndefined {

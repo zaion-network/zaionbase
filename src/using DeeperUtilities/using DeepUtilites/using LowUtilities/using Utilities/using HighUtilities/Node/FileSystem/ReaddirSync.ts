@@ -1,6 +1,8 @@
 import { Stats, readdirSync as r, statSync, Dirent } from "fs";
 import { join } from "path";
-import * as HighUtilities from "../../../../../../../";
+// import * as HighUtilities from "../../../../../../../";
+import { Conditioner } from "../../../../../../Conditioner";
+import { BasicClass } from "../../../../../BasicClass";
 
 declare module "./ReaddirSync" {
   namespace ReaddirSync {
@@ -72,7 +74,7 @@ export interface ReaddirSync<T extends string[]>
 }
 
 export class ReaddirSync<T extends string[]>
-  extends HighUtilities.BasicClass.BasicClass
+  extends BasicClass
   implements ReaddirSync.ReaddirSync<T>
 {
   constructor(
@@ -128,8 +130,8 @@ export class ReaddirSync<T extends string[]>
     return (file: string) => {
       this.#file = file;
       this.dirPath = path;
-      const maaa = HighUtilities.Conditioner.makeActionAndArgs;
-      const mv = HighUtilities.Conditioner.makeValidations;
+      const maaa = Conditioner.makeActionAndArgs;
+      const mv = Conditioner.makeValidations;
       const boolean = this.conditioner.boolean;
       const iftrue = maaa(() => this.#jointAndLastModif(), []);
       const iffalse = maaa(() => this.#dirAndFilename(), []);
@@ -148,8 +150,8 @@ export class ReaddirSync<T extends string[]>
     return (file: Dirent) => {
       this.#file = file.name;
       this.dirPath = path;
-      const maaa = HighUtilities.Conditioner.makeActionAndArgs;
-      const mv = HighUtilities.Conditioner.makeValidations;
+      const maaa = Conditioner.makeActionAndArgs;
+      const mv = Conditioner.makeValidations;
       const boolean = this.conditioner.boolean;
       const iftrue = maaa(() => this.#jointAndLastModif(), []);
       const iffalse = maaa(() => this.#dirAndFilename(), []);

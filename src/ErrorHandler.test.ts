@@ -1,8 +1,12 @@
-import { ErrorHandler } from "./ErrorHandler";
+import { describe, it, expect } from "bun:test";
+import { errorCb } from "./ErrorHandler";
 
-const cb = ErrorHandler.errorCb("boom");
-try {
-  cb();
-} catch (error: any) {
-  console.log("got an error!!: ", error.message);
-}
+describe("errorCb", () => {
+  it("dovrebbe esistere", () => {
+    expect(errorCb).toBeTruthy();
+  });
+  it("dovrebbe lanciare un errore", () => {
+    const cb = errorCb("boom");
+    expect(cb).toThrow("boom");
+  });
+});

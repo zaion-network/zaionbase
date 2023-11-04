@@ -1,33 +1,37 @@
-import { Utilities } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/Utilities";
+// import { Utilities } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/Utilities";
+import { DataStructures } from "./DataStructures";
 import { tester } from "./utils/tester";
 
-const Tuple = Utilities.DataStructures.Tuple;
-const Tuple2 = Utilities.DataStructures.Tuple2;
+const Tuple = DataStructures.Tuple;
+const WrongTuple = DataStructures.WrongTuple;
 
 const test1 = () => {
-  const aaaa = new Tuple([0]).add("sic").add(() => {});
+  const aaaa = new WrongTuple([0]).add("sic").add(() => {});
   // const aaaa = { arr: [[0], "sic", () => {}] } as const;
   let o1 = aaaa.arr[0];
   let o2 = aaaa.arr[1];
   let o3 = aaaa.arr[2];
   console.log(aaaa);
-  type oo<T extends any[], U> = Utilities.DataStructures.Tuple.AddToTuple<T, U>;
-};
-
-const test2 = () => {
-  const aaaa = new Tuple2([0]).push("sic").push(() => {});
-  // const aaaa = { arr: [[0], "sic", () => {}] } as const;
-  let o1 = aaaa.arr[0];
-  let o2 = aaaa.arr[1];
-  let o3 = aaaa.arr[2];
-  console.log(aaaa);
-  type oo<T extends any[], U> = Utilities.DataStructures.Tuple.AddToTuple<T, U>;
+  type oo<T extends any[], U> = DataStructures.WrongTuple.AddToTuple<T, U>;
 };
 
 tester(() => {
-  const tuple = new Tuple2((n: number) => n.toString()).push((a: string) => [
-    a,
-  ]);
+  const test2 = () => {
+    const aaaa = new Tuple([0]).push("sic").push(() => {
+      console.log("ci sono");
+    });
+    // const aaaa = { arr: [[0], "sic", () => {}] } as const;
+    let o1 = aaaa.arr[0];
+    let o2 = aaaa.arr[1];
+    let o3 = aaaa.arr[2];
+    console.log(o1);
+    o3();
+  };
+  test2();
+})(true);
+
+tester(() => {
+  const tuple = new Tuple((n: number) => n.toString()).push((a: string) => [a]);
   const doo = <T extends (typeof tuple)["arr"]>(t: T) => {
     let accumulator: any = 2;
     for (let i = 0; i < t.length; i++) {
@@ -41,7 +45,7 @@ tester(() => {
     return accumulator;
   };
   console.log(doo(tuple.arr));
-})(true);
+})(false);
 
 // example 1 for ProcessingNoiz_v1
 tester(() => {
@@ -94,4 +98,4 @@ tester(() => {
     .use(scratched)
     .process({ name: "santa-" });
   console.log(res3);
-});
+})(false);

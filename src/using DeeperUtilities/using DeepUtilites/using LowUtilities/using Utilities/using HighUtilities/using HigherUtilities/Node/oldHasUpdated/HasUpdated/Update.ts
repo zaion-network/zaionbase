@@ -1,5 +1,5 @@
 import { Path } from "../../../../Node/Path";
-import { HigherUtilities } from "../../../../HigherUtilites";
+import { HigherUtilities } from "../../../../HigherUtilities";
 import { StatsSync } from "../../../../Node/FileSystem/StatsSync";
 
 export class Update<

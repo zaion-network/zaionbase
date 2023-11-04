@@ -1,4 +1,4 @@
-import "../../../../../../JavaScript";
+// import "../../../../../../JavaScript";
 declare module "../../../../../../JavaScript" {
   namespace JavaScript {
     interface RegExp_utils {
@@ -39,6 +39,7 @@ declare module "./RegExpUtils" {
       abstract [Symbol.matchAll]: (
         str: string
       ) => IterableIterator<RegExpMatchArray>;
+      abstract hasIndices: boolean;
     }
     interface IZionRegExp extends RegExp {}
   }

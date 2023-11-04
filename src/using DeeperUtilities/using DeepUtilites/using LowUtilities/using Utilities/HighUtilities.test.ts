@@ -1,4 +1,11 @@
 import { HighUtilities } from "./HighUtilities";
+import { describe, it, expect } from "bun:test";
 
-let res = HighUtilities.MapFromJson.parseMapFromJson('[["A","ciao"]]');
-console.log(res);
+describe(`${HighUtilities.name}`, () => {
+  it("controlla presenza elementi", () => {
+    expect(HighUtilities).toBeTruthy();
+    expect(HighUtilities.MapFromJson).toBeTruthy();
+    expect(HighUtilities.benchmark).toBeTruthy();
+    expect(HighUtilities.Action).toBeTruthy();
+  });
+});

@@ -111,10 +111,6 @@ export namespace MapUtils {
   }
 }
 
-export interface ExtendedMap<K, V> extends Map<K, V> {
-  stringify(): string;
-}
-
 export const stringifyMapArray: stringifier = map =>
   JSON.stringify(Array.from(map));
 
@@ -136,7 +132,15 @@ export abstract class NonNullableMap<K, V> extends Map<K, V> {
     return value as NonNullable<V>;
   }
 }
+
+export interface ExtendedMap<K, V> extends Map<K, V> {
+  stringify(): string;
+}
+
 export class ExtendedMap<K, V> extends Map<K, V> implements ExtendedMap<K, V> {
+  constructor(iterable?: Iterable<readonly [K, V]>) {
+    super(iterable);
+  }
   stringify() {
     return stringifyMap(this, "object");
   }

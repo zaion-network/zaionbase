@@ -1,4 +1,4 @@
-import "../../../../../../JavaScript";
+// import "../../../../../../JavaScript";
 declare module "../../../../../../JavaScript" {
   namespace JavaScript {
     interface String_utils {
@@ -57,6 +57,54 @@ declare module "./StringUtils" {
   }
   interface generateFilename {
     (line: string, cb: generateFilenameCb): string;
+  }
+  namespace StringUtils {
+    // sono tutti dupliacati da togliere
+    namespace PathBuilder {
+      interface PathBuilder {
+        endpoint: string;
+        encoder: (obj: { [k: string]: string | number | undefined }) => string;
+        setEncoder(
+          encoder: (obj: { [k: string]: string | number | undefined }) => string
+        ): this;
+        hasher: (secret: string, value: string) => string;
+        setHasher(hasher: (secret: string, value: string) => string): this;
+        build<T extends { [k: string]: string | number | undefined }>(
+          props: T
+        ): string;
+        options?: {
+          timestamped?: boolean;
+          signed?: boolean;
+          secret?: string;
+          payload?: boolean;
+        };
+      }
+    }
+    namespace String_utils {
+      interface ctm extends customTagMaker {}
+    }
+    interface splitAtChar {
+      (char: string): (e: string) => string[];
+    }
+
+    interface customTag {
+      (strings: TemplateStringsArray, ...values: any[]): string;
+    }
+    interface customTagMaker {
+      (...args: string[]): string;
+    }
+    interface IsplitAt_v1 {
+      (string: string, symbol: string): string[];
+    }
+    interface IupperCaseFirst_v1 {
+      (string: string): string;
+    }
+    interface generateFilenameCb {
+      (line: string): string;
+    }
+    interface generateFilename {
+      (line: string, cb: generateFilenameCb): string;
+    }
   }
 }
 export class StringUtils {}
