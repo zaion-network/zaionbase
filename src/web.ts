@@ -1,5 +1,5 @@
 import { ambulacaca } from "./webinar";
-export * as JavaScript from "./JavaScript";
+export * as JavaScript from "./_000-no-dependencies/JavaScript";
 export const web = "i am web";
 
 declare module "./web" {

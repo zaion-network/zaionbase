@@ -1,2 +1,2 @@
-import { Https } from "../../src/using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/Node/Https";
+import { Https } from "../../src/_005/Node/Https";
 export default Https;
