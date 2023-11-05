@@ -26,6 +26,10 @@
     "./array": {
       "default": "./dist/array/index.js",
       "types": "./array/index.ts"
+    },
+    "./server": {
+      "default": "./dist/server/index.js",
+      "types": "./server/node/index.ts"
     }
   },
   "files": [

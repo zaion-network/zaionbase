@@ -11,5 +11,11 @@ const cryptoNode = await Bun.build({
   outdir: "dist/crypto",
   target: "node",
 });
+const serverNode = await Bun.build({
+  entrypoints: ["./server/node/index.ts"],
+  outdir: "dist/server",
+  target: "node",
+});
 console.log(res);
 console.log(cryptoNode);
+console.log(serverNode);
