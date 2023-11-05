@@ -9,28 +9,34 @@ import {
 } from "http";
 import { createServer as createHttpsServer } from "https";
 let httpServer: Server<typeof IncomingMessage, typeof ServerResponse>;
-beforeAll(() => {
+const message = { name: "ciao" };
+beforeAll(async done => {
   console.log("setup");
 
+  // @ts-expect-error
   httpServer = createHttpServer((req, res) => {
-    console.log(req.url);
-    res.write(JSON.stringify({ name: "ciao" }));
+    res.write(JSON.stringify(message));
     res.end();
   });
+  httpServer.on("listening", () => done());
   httpServer.listen(7999, () => console.log("listening on port 7999"));
 });
-const cbs: ((event: any) => any)[] = [() => httpServer.close()];
-const emit = (event?: string, args?: any) => {
-  cbs.forEach(cb => {
-    cb(args);
-  });
-};
 
 describe(`${httpRequest.name}`, () => {
   it("controlla export", () => {
     expect(httpRequest).toBeTruthy();
   });
-  it("test richiest", async () => {
+  it("test richieste", async () => {
+    const options = {
+      host: "localhost",
+      port: 7999,
+      method: "GET",
+      path: "",
+    };
+    const res = await httpRequest<{ name: string }>(options)();
+    expect(res).toEqual(message);
+  });
+  it("dovrebbe overridare la cb default", async done => {
     setTimeout(async () => {
       const options = {
         host: "localhost",
@@ -38,9 +44,14 @@ describe(`${httpRequest.name}`, () => {
         method: "GET",
         path: "",
       };
-      const res = await httpRequest<{ name: string }>(options)();
-      console.log(res);
-      httpServer.close();
-    }, 1000);
+      httpRequest<{ name: string }>(options, res => {
+        res.on("data", chunk => {
+          expect(chunk.toString()).toEqual('{"name":"ciao"}');
+          done();
+        });
+      })();
+      // console.log(res);
+      // expect(res).toEqual(message);
+    }, 10);
   });
 });

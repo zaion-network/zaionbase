@@ -34,22 +34,13 @@ export interface RequestCallback {
 }
 export function httpRequest<T>(
   options: string | https.RequestOptions | URL,
-  cbs?: {
-    error: (reject: (reason?: any) => void) => (err: Error) => void;
-    defaultRequestCb: typeof httpRequest.defaultRequestCb;
-  }
+  cb?: (res: https.IncomingMessage) => void
 ): (payload?: string) => Promise<T> {
-  if (!cbs) {
-    cbs = {
-      error: httpRequest.defaultOnErrorConfig,
-      defaultRequestCb: httpRequest.defaultRequestCb,
-    };
-  }
   return function (payload?: string) {
     return new Promise((resolve, reject) => {
-      const cb = cbs!.defaultRequestCb(resolve);
+      if (!cb) cb = httpRequest.defaultRequestCb(resolve);
       const req = http.request(options, cb);
-      req.on("error", cbs!.error(reject));
+      req.on("error", httpRequest.defaultOnErrorConfig(reject));
       if (payload) req.write(payload);
       req.end();
     });
