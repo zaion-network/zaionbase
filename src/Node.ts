@@ -19,7 +19,10 @@ import {
   buildPathTuple,
   joinPaths,
 } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/Node/Path";
-import { httpRequest } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/Node/Https";
+import {
+  // httpRequest,
+  Https as HTTPS,
+} from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/using Utilities/using HighUtilities/Node/Https";
 
 declare module "./Node" {
   namespace Node {
@@ -57,4 +60,4 @@ export const Path: Node.Path = {
   buildPathTuple,
   joinPaths,
 };
-export const Https: Node.Https = { httpRequest };
+export const Https: Node.Https = HTTPS;
