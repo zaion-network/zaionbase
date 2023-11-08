@@ -1,12 +1,20 @@
 import { describe, it, expect } from "bun:test";
-import { ExtendedMap, stringifyMap } from "./MapUtils";
+import { MapUtils } from "./MapUtils";
+
+describe("controlla export", () => {
+  it("dovrebbero esserci tutti!", () => {
+    expect(MapUtils).toBeTruthy();
+    expect(MapUtils.NonNullableMap).toBeTruthy();
+    expect(MapUtils.parseMapFromJsonStrategy).toBeTruthy();
+  });
+});
 
 describe("stringifyMap default behave", () => {
   it("dovrebbe tornare il valore aspettato", () => {
     const map = new Map();
     map.set(1, "ciao");
     map.set(2, "miao");
-    const string = stringifyMap(map);
+    const string = MapUtils.stringifyMap(map);
     const EXPECTED = '[[1,"ciao"],[2,"miao"]]';
     expect(string).toEqual(EXPECTED);
   });
@@ -17,7 +25,7 @@ describe("stringifyMap object behave", () => {
     const map = new Map();
     map.set(1, "ciao");
     map.set(2, "miao");
-    const string = stringifyMap(map, "object");
+    const string = MapUtils.stringifyMap(map, "object");
     const EXPECTED = `{"1":"ciao","2":"miao"}`;
     expect(string).toEqual(EXPECTED);
   });
@@ -25,7 +33,7 @@ describe("stringifyMap object behave", () => {
 
 describe("ExtendedMap", () => {
   it("dovrebe creare una classe che ha come mettodo stringify", () => {
-    const map = new ExtendedMap();
+    const map = new MapUtils.ExtendedMap();
     map.set("ciao", "mamma");
     map.set("bella", "ciao");
     const EXPECTED = `{"ciao":"mamma","bella":"ciao"}`;
@@ -33,7 +41,9 @@ describe("ExtendedMap", () => {
     expect(result).toEqual(EXPECTED);
   });
   it("", () => {
-    const map = new ExtendedMap<"test" | "tap", string>([["test", "tsdt"]]);
+    const map = new MapUtils.ExtendedMap<"test" | "tap", string>([
+      ["test", "tsdt"],
+    ]);
     console.log(map.get("test"));
   });
 });
