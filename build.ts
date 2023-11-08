@@ -1,7 +1,13 @@
 #!/usr/bin/env bun
 
 const res = await Bun.build({
-  entrypoints: ["./src/index.ts", "./array/index.ts", "./map/index.ts"],
+  entrypoints: ["./src/index.ts"],
+  outdir: "dist",
+  target: "bun",
+  format: "esm",
+});
+const arrayMap = await Bun.build({
+  entrypoints: ["./array/index.ts", "./map/index.ts"],
   outdir: "dist",
   target: "bun",
   format: "esm",
@@ -21,7 +27,8 @@ const web = await Bun.build({
   outdir: "dist/web",
   target: "browser",
 });
-console.log(res);
-console.log(cryptoNode);
-console.log(serverNode);
-console.log(web);
+console.log(res.success);
+console.log(arrayMap.success);
+console.log(cryptoNode.success);
+console.log(serverNode.success);
+console.log(web.success);
