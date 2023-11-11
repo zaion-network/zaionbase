@@ -568,4 +568,57 @@ describe("Mixins", () => {
     const mixed = new Mixed(1000, false, "ulllaa");
     console.log(mixed);
   });
+
+  it("test classe tipo nodo", () => {
+    type Nodo = new (value: { name: string; surname: string }) => {
+      value: { name: string; surname: string };
+    };
+    const Nodo: Nodo = class {
+      value: { name: string; surname: string };
+      constructor(value: { name: string; surname: string }) {
+        this.value = value;
+      }
+    };
+    interface Relations {
+      relations: Map<string, Map<string, string>>;
+    }
+    type Relationable = Mixins.mixin<Relations, InstanceType<Nodo>, Nodo>;
+    const Relationable: Relationable = ctor => {
+      return class extends ctor implements Relations {
+        relations: Map<string, Map<string, string>> = new Map();
+      };
+    };
+    const NewClass = new Mixins.Mix(Nodo).with(Relationable);
+    const newobk = new NewClass({ name: "giacomo", surname: "gagliano" });
+    expect(newobk.relations).toBeTruthy();
+  });
+
+  it.only("test classe tipo nodo generico", () => {
+    interface Nodo<V> {
+      value: V;
+    }
+    class Nodo<V> {
+      value: V;
+      constructor(value: V) {
+        this.value = value;
+      }
+    }
+    interface Relations {
+      relations: Map<string, Map<string, string>>;
+    }
+    type Relationable<V> = Mixins.mixin<Relations, Nodo<V>, typeof Nodo<V>>;
+
+    const Relationable: Relationable<any> = ctor => {
+      return class extends ctor {
+        relations: Map<string, Map<string, string>> = new Map();
+      };
+    };
+
+    const NewClass = class extends new Mixins.Mix(
+      Nodo<{ name: string; surname: string }>
+    ).with(Relationable) {};
+    const newobk = new NewClass({ name: "giacomo", surname: "gagliano" });
+    newobk.value;
+    console.log(newobk.value.name);
+  });
 });
