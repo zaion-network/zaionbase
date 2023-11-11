@@ -1,20 +1,20 @@
 import { describe, it, expect } from "bun:test";
-import { fromArrayToMap } from "./fromArrayToObj";
+import { fromArrayToObj } from "./fromArrayToObj";
 
 const testArray = [
   ["sono", "un"],
   ["array", "bello"],
 ];
 
-describe(`${fromArrayToMap.name}`, () => {
+describe(`${fromArrayToObj.name}`, () => {
   it("dovrebbe lanciare un errore perchè gli è stato passato un oggetto", () => {
-    expect(() => fromArrayToMap({})).toThrow();
+    expect(() => fromArrayToObj({})).toThrow();
   });
   it("dovrebbe lanciare perché gli è stato passato un map", () => {
-    expect(() => fromArrayToMap(new Map()));
+    expect(() => fromArrayToObj(new Map()));
   });
   it("dovrebbe ritornare un oggetto", () => {
-    const res = fromArrayToMap(testArray);
+    const res = fromArrayToObj(testArray);
     const risulatatoAtteso = {
       sono: "un",
       array: "bello",
@@ -31,7 +31,7 @@ describe(`${fromArrayToMap.name}`, () => {
       },
     };
     testArray.push(arrayAnnidato);
-    const res = fromArrayToMap(testArray);
+    const res = fromArrayToObj(testArray);
     expect(res).toEqual(risulatatoAtteso);
   });
 });
