@@ -89,3 +89,22 @@ type oo = Types.extenders.isAeqB<
     [k: string]: any;
   }
 >;
+
+// // this generates a strict requirement
+// type MyRecord = Types.Record.GenericRecord<{ name: number }, "value">;
+// // this generates a losey requirement
+// type MyRecord2 = Types.Record.GenericRecord<{ name: number }>;
+// type ou = { value: { name: number } };
+// type oo = { value: { name: number }; s: number };
+// type oi = { value: { namd: number }; valu: { name: number } };
+// type test1 = ou extends MyRecord ? true : false; // true
+// type test1a = ou extends MyRecord2 ? true : false; // true
+// type test2 = oo extends MyRecord ? true : false; // true
+// type test2a = oo extends MyRecord2 ? true : false; // false
+// type test3 = oi extends MyRecord ? true : false; // false
+// type test3a = oi extends MyRecord2 ? true : false; // false
+
+// type bitch = new () => MyRecord;
+// type test4 = bitch extends FunctionTypes.Ctors.GRecordCtor<any, any>
+//   ? true
+//   : false;
