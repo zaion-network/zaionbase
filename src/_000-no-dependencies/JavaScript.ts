@@ -38,8 +38,9 @@ import {
   deepEquals,
   difference,
 } from "../_005/JavaScript/ArrayUtils";
-import { stringifyMap } from "../_005/JavaScript/MapUtils";
+import { MapUtils as MU } from "../_005/JavaScript/MapUtils";
 import { BasicClass } from "../_005/JavaScript/ClassUtils";
+const { stringifyMap } = MU;
 
 declare module "./JavaScript" {
   namespace JavaScript {
