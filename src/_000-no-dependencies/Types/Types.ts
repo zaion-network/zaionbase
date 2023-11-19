@@ -8,7 +8,6 @@ import { ZionTypes as ZT } from "./ZaionTypes.type";
 import type { UnionToIntersection as U2I } from "./utils/UnionToIntersection.type";
 import type { IntersectionOfObjectInArray as IOA } from "./utils/IntersectionOfObjectInArray.type";
 import type { RequireOnlyOne as ROO } from "./utils/RequireOnlyOne.type";
-import type { TupleUnion as TU } from "./utils/TupleUnion.type";
 import type { BooleanKeys as BK } from "./utils/BooleanKeys.type";
 import type { flatarr as fa } from "./utils/flatarr.type";
 import type {
@@ -38,8 +37,6 @@ declare module "./Types" {
       Keys extends string,
       makeRequired extends boolean = false
     > = BK<Keys, makeRequired>;
-
-    type TupleUnion<U extends string, R extends any[] = []> = TU<U, R>;
 
     /**
      * Usage
