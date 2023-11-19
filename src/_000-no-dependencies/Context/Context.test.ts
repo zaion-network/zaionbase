@@ -2,7 +2,9 @@ import { describe, it, expect } from "bun:test";
 import { Context } from "./Context";
 import { Mixins } from "../Mixins";
 import { tester } from "../utils/tester";
-import { NonNullableMap } from "../../_005/JavaScript/MapUtils";
+import { MapUtils } from "../../_005/JavaScript/MapUtils";
+
+const { NonNullableMap } = MapUtils;
 
 describe("Context", () => {
   it("dovrebbe cambaire correttamente il contesto", () => {
