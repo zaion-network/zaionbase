@@ -15,3 +15,7 @@ try {
 } catch (error: unknown) {
   if (error instanceof Error) console.log(error.message);
 }
+
+const singleBuilder2 = new SingleBuilder();
+const setSgl2 = singleBuilder2.setA(100);
+const a2 = setSgl2.a;
