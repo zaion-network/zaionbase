@@ -1,21 +1,21 @@
 declare module "./UnionStuff.type" {
   namespace UnionStuff {
-    type UnionToIntersection<U> = (
+    type unionToIntersection<U> = (
       U extends any ? (k: U) => void : never
     ) extends (k: infer I) => void
       ? I
       : never;
 
-    type UnionToOvlds<U> = UnionToIntersection<
+    type unionToOvlds<U> = unionToIntersection<
       U extends any ? (f: U) => void : never
     >;
 
-    type PopUnion<U> = UnionToOvlds<U> extends (a: infer A) => void ? A : never;
+    type popUnion<U> = unionToOvlds<U> extends (a: infer A) => void ? A : never;
 
-    type IsUnion<T> = [T] extends [UnionToIntersection<T>] ? false : true;
+    type isUnion<T> = [T] extends [unionToIntersection<T>] ? false : true;
 
-    type UnionToTuple<T, A extends unknown[] = []> = IsUnion<T> extends true
-      ? UnionToTuple<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
+    type unionToTuple<T, A extends unknown[] = []> = isUnion<T> extends true
+      ? unionToTuple<Exclude<T, popUnion<T>>, [popUnion<T>, ...A]>
       : [T, ...A];
   }
 }
