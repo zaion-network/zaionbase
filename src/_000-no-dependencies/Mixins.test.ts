@@ -25,11 +25,11 @@ tester(() => {
 
   const reduce = Mixins.reduce;
 
-  class Fly extends reduce(arr) {}
+  // class Fly extends reduce(arr) {}
 
-  const gly = new Fly({ name: "tony" });
-  gly.fly();
-  gly.chase();
+  // const gly = new Fly({ name: "tony" });
+  // gly.fly();
+  // gly.chase();
 
   // type BaseCtor = Mixins.Ctor<
   //   [{ name: string }, boolean],
@@ -593,7 +593,7 @@ describe("Mixins", () => {
     expect(newobk.relations).toBeTruthy();
   });
 
-  it.only("test classe tipo nodo generico", () => {
+  it("test classe tipo nodo generico", () => {
     interface Nodo<V> {
       value: V;
     }
