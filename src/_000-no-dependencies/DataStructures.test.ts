@@ -1,9 +1,42 @@
 // import { Utilities } from "./using DeeperUtilities/using DeepUtilites/using LowUtilities/Utilities";
+import { describe, it, expect } from "bun:test";
 import { DataStructures } from "./DataStructures";
 import { tester } from "./utils/tester";
 
 const Tuple = DataStructures.Tuple;
 const WrongTuple = DataStructures.WrongTuple;
+
+describe(`${DataStructures.name}`, () => {
+  it("test Tuple", () => {
+    const aaaa = new Tuple([0]).push("sic").push(() => {
+      console.log("ci sono");
+    });
+    // const aaaa = { arr: [[0], "sic", () => {}] } as const;
+    let o1 = aaaa.arr[0];
+    let o2 = aaaa.arr[1];
+    let o3 = aaaa.arr[2];
+    expect(o1).toEqual([0]);
+    // o3();
+  });
+  it("testa Tuple 2", () => {
+    const tuple = new Tuple((n: number) => n.toString()).push((a: string) => [
+      a,
+    ]);
+    const doo = <T extends (typeof tuple)["arr"]>(t: T) => {
+      let accumulator: any = 2;
+      for (let i = 0; i < t.length; i++) {
+        if (i === 0) {
+          accumulator = t[i](accumulator);
+        }
+        if (i === 1) {
+          accumulator = t[i](accumulator);
+        }
+      }
+      return accumulator;
+    };
+    expect(doo(tuple.arr)).toEqual(["2"]);
+  });
+});
 
 const test1 = () => {
   const aaaa = new WrongTuple([0]).add("sic").add(() => {});
@@ -14,38 +47,6 @@ const test1 = () => {
   console.log(aaaa);
   type oo<T extends any[], U> = DataStructures.WrongTuple.AddToTuple<T, U>;
 };
-
-tester(() => {
-  const test2 = () => {
-    const aaaa = new Tuple([0]).push("sic").push(() => {
-      console.log("ci sono");
-    });
-    // const aaaa = { arr: [[0], "sic", () => {}] } as const;
-    let o1 = aaaa.arr[0];
-    let o2 = aaaa.arr[1];
-    let o3 = aaaa.arr[2];
-    console.log(o1);
-    o3();
-  };
-  test2();
-})(true);
-
-tester(() => {
-  const tuple = new Tuple((n: number) => n.toString()).push((a: string) => [a]);
-  const doo = <T extends (typeof tuple)["arr"]>(t: T) => {
-    let accumulator: any = 2;
-    for (let i = 0; i < t.length; i++) {
-      if (i === 0) {
-        accumulator = t[i](accumulator);
-      }
-      if (i === 1) {
-        accumulator = t[i](accumulator);
-      }
-    }
-    return accumulator;
-  };
-  console.log(doo(tuple.arr));
-})(false);
 
 // example 1 for ProcessingNoiz_v1
 tester(() => {
