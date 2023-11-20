@@ -1,6 +1,5 @@
 import { Map as M, Array as A } from "../Types/DataStructures/Mixer.type";
 import { Pair } from "../Types/DataStructures/Tuple.type";
-import { Map as Mt } from "../Types/DataStructures/Map.type";
 
 export function fromMapToArray<M extends A.toMap<any>>(
   map: M
