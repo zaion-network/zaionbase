@@ -42,6 +42,8 @@ export namespace Array {
   // TUPLEARR => OBJ
   type checkAndRecurse<T extends A.KeyValueArr> = T extends Array<any>
     ? toObj<T>
+    : T extends toMap<infer X>
+    ? toObj<X>
     : T;
   export type toObj<T extends A.KeyValueArr> = {
     [K in A.keysInKeyValueArr<T>]: checkAndRecurse<A.extractor<T, K>>;
@@ -68,11 +70,6 @@ export namespace Map {
       ? [T, V]
       : A[K];
   };
-  type checkAndRecurse<M, I = number> = I extends number
-    ? inferArrayPair<M>[number] extends string
-      ? inferArrayPair<M>
-      : true
-    : never;
   type inferArrayPair<M> = M extends Array.toMap<infer T>
     ? replaceNestedArray<T>
     : never;
