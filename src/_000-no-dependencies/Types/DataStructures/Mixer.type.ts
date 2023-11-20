@@ -7,8 +7,6 @@ import { Pair } from "./Tuple.type";
 // // -------------------------------------- Object
 // export type KeyValueObj = { [k: PropertyKey]: any };
 
-type primitives = string | number | boolean | undefined | null;
-
 export namespace Object {
   type checkAndRecurse<T, K extends keyof T> = T[K] extends Pair.KeyValue
     ? toMap<Array.toObj<[T[K]]>>
