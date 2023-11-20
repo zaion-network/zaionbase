@@ -1,7 +1,10 @@
 import { describe, it, expect } from "bun:test";
 import { fromMapToObj } from "./fromMapToObj";
+import { Array as A } from "../Types/DataStructures/Mixer.type";
 
-const map = new Map();
+type keyValuePairArr = [["ero", "un"], ["map", "carino"]];
+type pairsMap2 = A.toMap<keyValuePairArr>;
+const map: pairsMap2 = new Map();
 map.set("ero", "un");
 map.set("map", "carino");
 describe(`${fromMapToObj.name}`, () => {
@@ -11,10 +14,18 @@ describe(`${fromMapToObj.name}`, () => {
       map: "carino",
     };
     const obj = fromMapToObj(map);
+
     expect(obj).toEqual(expectedValue);
   });
   it("dovrebbe creare un oggetto annidato", () => {
-    const mapannidato = new Map();
+    type keyValuePairArr2 = [["anche", "annidato"]];
+    type pairsMap2 = A.toMap<keyValuePairArr2>;
+    type keyValuePairArr = [["ero", "un"], ["map", "carino"], ["e", pairsMap2]];
+    type pairsMap1 = A.toMap<keyValuePairArr>;
+    const map: pairsMap1 = new Map();
+    map.set("ero", "un");
+    map.set("map", "carino");
+    const mapannidato: pairsMap2 = new Map();
     const expectedValue = {
       ero: "un",
       map: "carino",
@@ -25,6 +36,8 @@ describe(`${fromMapToObj.name}`, () => {
     mapannidato.set("anche", "annidato");
     map.set("e", mapannidato);
     const obj = fromMapToObj(map);
+    expect(obj.e.anche).toEqual(mapannidato.get("anche"));
+
     expect(obj).toEqual(expectedValue);
   });
 });

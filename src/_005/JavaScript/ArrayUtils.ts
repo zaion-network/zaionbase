@@ -2,7 +2,7 @@
 import { Conditioner } from "../../_001/Conditioner";
 import type { customTagMaker } from "./StringUtils";
 
-declare module "../../../../../../JavaScript" {
+declare module "../../_000-no-dependencies/JavaScript" {
   namespace JavaScript {
     interface ArrayUtils {
       ExtendedArray: typeof ExtendedArray;
