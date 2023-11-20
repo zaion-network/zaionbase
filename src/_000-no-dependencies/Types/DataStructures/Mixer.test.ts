@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import type { Map, Array, Object } from "./Mixer.type";
+import type { Map as M, Array as A, Object } from "./Mixer.type";
 // TUPLE => OBJ
 
 describe(`Mixer types`, () => {
@@ -9,11 +9,11 @@ describe(`Mixer types`, () => {
     // pre costruire un oggetto è meglio partire da una tupla
     // il comportamento di js non è prevedibile, creando una
     // array di `keyValueTuple` di mitiga il comportamento aleatorio
-    interface Obj extends Array.toObj<keyValueTupleArr> {}
+    interface Obj extends A.toObj<keyValueTupleArr> {}
 
     const MyMap: Object.Ctors.TypedMapCtor = class MyMap<T>
       extends Map
-      implements Object.toMap<T>
+      implements Object.toMap2<T>
     {
       set<K extends keyof T>(key: K, value: T[K]): this {
         super.set(key, value);
@@ -30,10 +30,10 @@ describe(`Mixer types`, () => {
   });
   it("crea una classe non dinamica", () => {
     type keyValueTupleArr = [["A", string], ["B", number]];
-    interface Obj extends Array.toObj<keyValueTupleArr> {}
+    interface Obj extends A.toObj<keyValueTupleArr> {}
     const MyMap: Object.Ctors.TypedMapCtor = class MyMap<T>
       extends Map
-      implements Object.toMap<T>
+      implements Object.toMap2<T>
     {
       set<K extends keyof T>(key: K, value: T[K]): this {
         super.set(key, value);
@@ -49,7 +49,7 @@ describe(`Mixer types`, () => {
   });
   it("crea un map partendo da un oggetto", () => {
     type keyValueTupleArr = [["A", string], ["B", number]];
-    interface Obj extends Array.toObj<keyValueTupleArr> {}
+    interface Obj extends A.toObj<keyValueTupleArr> {}
     const map3: Object.toMap<Obj> = new Map();
     map3.set("A", "mamma");
     map3.set("B", 10);
@@ -63,7 +63,7 @@ describe(`Mixer types`, () => {
   // ____________________________ OBJ => TUPLEARR
   it("crea un tupleArray a partire da un oggetto", () => {
     type keyValueTupleArr = [["A", string], ["B", number]];
-    interface Obj extends Array.toObj<keyValueTupleArr> {}
+    interface Obj extends A.toObj<keyValueTupleArr> {}
     type test = Object.toArr<Obj>;
     const arr: test = [
       ["A", "asd"],
@@ -73,7 +73,7 @@ describe(`Mixer types`, () => {
   // ____________________________ TUPLEARR => MAP
   it("creare un map partendo da un type keyValueTupleMap", () => {
     type keyValueTupleArr = [["B", boolean], ["D", number]];
-    const map4: Array.toMap<keyValueTupleArr> = new Map();
+    const map4: A.toMap<keyValueTupleArr> = new Map();
     map4.set("B", true);
     map4.set("D", 100);
     const got4 = map4.get("D");
@@ -81,7 +81,7 @@ describe(`Mixer types`, () => {
   // ____________________________ TUPLEARR => OBJ
   it("crea un oggetto a partire da un keyValueTupleMap", () => {
     type keyValueTupleArr = [["B", boolean], ["D", number]];
-    type obj = Array.toObj<keyValueTupleArr>;
+    type obj = A.toObj<keyValueTupleArr>;
     const obj: obj = {
       B: true,
       D: 199,
@@ -89,7 +89,7 @@ describe(`Mixer types`, () => {
   });
   it("crea una classe a partire da unta tupleArr", () => {
     type keyValueTupleArr = [["B", boolean], ["D", number]];
-    interface Obj extends Array.toObj<keyValueTupleArr> {}
+    interface Obj extends A.toObj<keyValueTupleArr> {}
     class Obj {}
     const ob = new Obj();
     ob.D;
@@ -99,8 +99,8 @@ describe(`Mixer types`, () => {
   it("crea un oggetto a partire da un map", () => {
     type keyValueTupleArr = [["B", boolean], ["D", number]];
     // anche per creare dei map bisogna partire da una tuplearr
-    type map = Array.toMap<keyValueTupleArr>;
-    type obj = Map.toObj<map>;
+    type map = A.toMap<keyValueTupleArr>;
+    type obj = M.toObj<map>;
     const obj: obj = {
       B: true,
       D: 22,
@@ -109,8 +109,8 @@ describe(`Mixer types`, () => {
   // ____________________________ MAP => TUPLEARR
   it("crea un keyValueTupleArr a partire da un map", () => {
     type keyValueTupleArr = [["B", boolean], ["D", number]];
-    type map = Array.toMap<keyValueTupleArr>;
-    type tuple = Map.toArr<map>;
+    type map = A.toMap<keyValueTupleArr>;
+    type tuple = M.toArr<map>;
     const tuple: tuple = [
       ["B", true],
       ["D", 1000],
