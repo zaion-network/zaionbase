@@ -1,6 +1,7 @@
 import { UnionStuff } from "../UnionStuff.type";
 import { Array as A } from "./Array.type";
 import { Object as O } from "./Object.type";
+import { Map as M } from "./Map.type";
 import { Pair } from "./Tuple.type";
 // import { Pair } from "./Tuple.type";
 
@@ -62,5 +63,18 @@ export namespace Map {
     : never;
 
   // MAP => TUPLEARR
-  export type toArr<M> = M extends Array.toMap<infer T> ? T : never;
+  type replaceNestedArray<A extends readonly any[]> = {
+    [K in keyof A]: A[K] extends [infer T, Array.toMap<infer V>]
+      ? [T, V]
+      : A[K];
+  };
+  type checkAndRecurse<M, I = number> = I extends number
+    ? inferArrayPair<M>[number] extends string
+      ? inferArrayPair<M>
+      : true
+    : never;
+  type inferArrayPair<M> = M extends Array.toMap<infer T>
+    ? replaceNestedArray<T>
+    : never;
+  export type toArr<M> = inferArrayPair<M>;
 }

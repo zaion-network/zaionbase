@@ -16,7 +16,6 @@ describe(`${fromMapToArray.name}`, () => {
     type keyValuePairArr = [["sono", "un"], ["map", "di test"]];
     type mapArr = A.toMap<keyValuePairArr>;
     const map: mapArr = new Map();
-    type arr = M.toArr<mapArr>;
 
     map.set("sono", "un");
     map.set("map", "di test");
@@ -26,56 +25,55 @@ describe(`${fromMapToArray.name}`, () => {
       ["map", "di test"],
     ];
     const res1 = res[0];
-    const res2 = res[1];
-    expect(res).toEqual(risultatoAtteso);
+    expect(res[0]).toEqual(risultatoAtteso[0]);
+    expect(res1).toEqual(["sono", "un"]);
   });
   it("dovrebbe creare un array annidato", () => {
+    type keyValuePairArr2 = [["un", "annidamento"]];
+    type keyValuePairArr3 = [["una", "coda"], ["e_pure", "unaltra"]];
+    type pairsMap2 = A.toMap<keyValuePairArr2>;
+    type pairsMap3 = A.toMap<keyValuePairArr3>;
+    type keyValuePairArr = [
+      ["sono", "un"],
+      ["map", "di test"],
+      ["con", pairsMap2],
+      ["and", pairsMap3]
+    ];
     const risultatoAtteso = [
       ["sono", "un"],
       ["map", "di test"],
       ["con", [["un", "annidamento"]]],
+      [
+        "and",
+        [
+          ["una", "coda"],
+          ["e_pure", "unaltra"],
+        ],
+      ],
     ];
     // const map = new Map();
-    type keyValuePairArr2 = [["un", "annidamento"]];
-    type mapArr2 = A.toMap<keyValuePairArr2>;
-    const mapannidato: mapArr2 = new Map();
-    mapannidato.set("un", "annidamento");
-    type keyValuePairArr = [
-      ["sono", "un"],
-      ["map", "di test"],
-      ["con", mapArr2]
-    ];
+    const mapannidato1: pairsMap2 = new Map();
+    mapannidato1.set("un", "annidamento");
+    const mapannidato2: pairsMap3 = new Map();
+    mapannidato2.set("una", "coda");
+    mapannidato2.set("e_pure", "unaltra");
     type mapArr = A.toMap<keyValuePairArr>;
     const map: mapArr = new Map();
     map.set("sono", "un");
     map.set("map", "di test");
-    map.set("con", mapannidato);
+    map.set("con", mapannidato1);
+    map.set("and", mapannidato2);
     const res = fromMapToArray(map);
     const res1 = res[0];
-    const res3 = res[2];
-    console.log(res3);
-
-    type arr = [
-      [10, mapArr],
-      [20, string],
-      [30, string],
-      [40, string],
-      [50, string]
-    ];
-    type res1 = Ar.indexArray<arr>;
-    type res = Extract<res1[number], [string, [number, mapArr]]>;
-
-    type subExtract<T> = T extends Array<any>
-      ? Extract<T[number], [string, A.toMap<any>]>
-      : never;
-
-    type extractNestedMap<T> = T extends A.toMap<infer T>
-      ? subExtract<T>[1] extends never
-        ? T
-        : [subExtract<T>[0], M.toArr<subExtract<T>[1]>]
-      : never;
-    type resultMap = extractNestedMap<mapArr>;
-
+    const res2 = res[2];
+    const res3 = res[2][1][0];
+    const res4 = res[3][1][1];
+    console.log(res1);
+    expect(res).toEqual(risultatoAtteso);
+    expect(res1).toEqual(["sono", "un"]);
+    expect(res2).toEqual(["con", [["un", "annidamento"]]]);
+    expect(res3).toEqual(["un", "annidamento"]);
+    expect(res4).toEqual(["e_pure", "unaltra"]);
     expect(res).toEqual(risultatoAtteso);
   });
 });
