@@ -3,6 +3,7 @@ import { Array as A } from "./Array.type";
 import { Object as O } from "./Object.type";
 import { Map as M } from "./Map.type";
 import { Pair } from "./Tuple.type";
+import { primitives } from "../Primitive.type";
 // import { Pair } from "./Tuple.type";
 
 // // -------------------------------------- Object
@@ -11,7 +12,9 @@ import { Pair } from "./Tuple.type";
 export namespace Object {
   type checkAndRecurse<T, K extends keyof T> = T[K] extends Pair.KeyValue
     ? toMap<Array.toObj<[T[K]]>>
-    : T[K];
+    : T[K] extends Array.toMap<infer X>
+    ? Array.toMap<X>
+    : toMap<T[K]>;
   // OBJ => MAP
   export type toMap<T> = {
     set<K extends keyof T>(key: K, value: T[K]): void;
@@ -50,9 +53,12 @@ export namespace Array {
   };
 
   // TUPLEARR => MAP
-  type toMapSub<T extends A.KeyValueArr> = {
-    [K in A.keysInKeyValueArr<T>]: A.extractor<T, K>;
+  type buildTuple<T extends A.KeyValueArr> = {
+    [K in A.keysInKeyValueArr<T>]: A.extractor<T, K> extends primitives
+      ? A.extractor<T, K>
+      : toMap<A.extractor<T, K>>;
   };
+  type toMapSub<T extends A.KeyValueArr> = buildTuple<T>;
   export type toMap<T extends A.KeyValueArr> = Object.toMap<toMapSub<T>>;
 }
 
