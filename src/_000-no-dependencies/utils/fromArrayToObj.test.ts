@@ -1,16 +1,18 @@
 import { describe, it, expect } from "bun:test";
 import { fromArrayToObj } from "./fromArrayToObj";
 
-const testArray = [
+const testArray: [["sono", "un"], ["array", "bello"]] = [
   ["sono", "un"],
   ["array", "bello"],
 ];
 
 describe(`${fromArrayToObj.name}`, () => {
   it("dovrebbe lanciare un errore perchè gli è stato passato un oggetto", () => {
+    // @ts-expect-error
     expect(() => fromArrayToObj({})).toThrow();
   });
   it("dovrebbe lanciare perché gli è stato passato un map", () => {
+    // @ts-expect-error
     expect(() => fromArrayToObj(new Map()));
   });
   it("dovrebbe ritornare un oggetto", () => {
@@ -22,7 +24,15 @@ describe(`${fromArrayToObj.name}`, () => {
     expect(res).toEqual(risulatatoAtteso);
   });
   it("dovrebbe creare un oggetto annidato", () => {
-    const arrayAnnidato = ["con", ["un", "annidamento"]];
+    const arrayAnnidato: ["con", ["un", "annidamento"]] = [
+      "con",
+      ["un", "annidamento"],
+    ];
+    const arr: [
+      ["sono", "un"],
+      ["array", "bello"],
+      ["con", ["un", "annidamento"]]
+    ] = [...testArray, arrayAnnidato];
     const risulatatoAtteso = {
       sono: "un",
       array: "bello",
@@ -30,8 +40,11 @@ describe(`${fromArrayToObj.name}`, () => {
         un: "annidamento",
       },
     };
-    testArray.push(arrayAnnidato);
-    const res = fromArrayToObj(testArray);
+
+    const res = fromArrayToObj(arr);
+    const res2 = res.array;
+    console.log(res.con.un);
+
     expect(res).toEqual(risulatatoAtteso);
   });
 });
