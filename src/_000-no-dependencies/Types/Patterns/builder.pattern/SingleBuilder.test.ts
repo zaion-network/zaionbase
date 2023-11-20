@@ -6,7 +6,7 @@ const setSome = some.setA(10).doit(a => {
 });
 const a = setSome.a;
 
-// Typescript da errore ma js funziona
+// Typescript da errore e js lancia errore
 try {
   // @ts-expect-error
   some.setA("funziona").doit(a => {
