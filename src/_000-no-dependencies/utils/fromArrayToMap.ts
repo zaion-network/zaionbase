@@ -1,3 +1,9 @@
+import { Pair } from "../Types/DataStructures/Tuple.type";
+import { Array as A } from "../Types/DataStructures/Mixer.type";
+
+export function fromArrayToMap<T extends any[]>(
+  array: T
+): Pair.isPair<T> extends true ? A.toMap<T> : Map<any, any>;
 export function fromArrayToMap<T extends any[]>(array: T) {
   if (!Array.isArray(array)) throw new Error("devi passare un array");
   const res = new Map();
