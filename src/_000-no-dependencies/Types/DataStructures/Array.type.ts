@@ -50,7 +50,11 @@ export namespace Array {
   /**
    * Sostituisce un valore nell'array passato
    */
-  export type subElement<A extends any[], I extends number | string, V> = {
-    [K in keyof A]: K extends `${I}` ? V : A[K];
-  };
+  export type subElement<A, I, V> = A extends any[]
+    ? I extends number | string
+      ? {
+          [K in keyof A]: K extends `${I}` ? V : A[K];
+        }
+      : never
+    : never;
 }
