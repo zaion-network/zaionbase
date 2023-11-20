@@ -1,6 +1,7 @@
 import { describe, it, expect } from "bun:test";
 import { Array as A, Map as M } from "./Mixer.type";
 import { Array as Ar } from "./Array.type";
+import { UnionStuff } from "../UnionStuff.type";
 
 describe(`Array.type`, () => {
   it("dovrebbe tornare l'elemento che corrisponde al type", () => {
@@ -24,7 +25,8 @@ describe(`Array.type`, () => {
     type keyValuePairArr = [
       ["sono", "un"],
       ["map", "di test"],
-      ["con", mapArr2]
+      ["con", mapArr2],
+      ["again", mapArr2]
     ];
     type mapArr = A.toMap<keyValuePairArr>;
 
