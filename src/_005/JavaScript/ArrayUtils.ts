@@ -2,35 +2,35 @@
 import { Conditioner } from "../../_001/Conditioner";
 import type { customTagMaker } from "./StringUtils";
 
-declare module "../../_000-no-dependencies/JavaScript" {
-  namespace JavaScript {
-    interface ArrayUtils {
-      ExtendedArray: typeof ExtendedArray;
-      TupleArray: typeof TupleArray;
-      ensureArray: isArray;
-      filterArray: filterArray;
-      grabPartToEdit: grabber;
-      substituteEditedPart: substituter;
-      splicer: splicer;
-      changePosition_v1: IchangePosition_v1;
-      checkArrayElementsConstructor_v1: IcheckArrayElementsConstructor_v1;
-      checkArraysContent_v1: IcheckArraysContent_v1;
-      checkObjectConstructor_v1: IcheckObjectConstructor_v1;
-      extractSameElementsFromArray_v1: IextractSameElementsFromArray_v1;
-      hasArrayObjectElements: IhasArrayObjectElements_v1;
-      isArrayEmpty: IisArrayEmpty_v1;
-      popFirst: IpopFirst_v1;
-      removeSpaceFromString: IremoveSpaceFromString_v1;
-      sliceArray: IsliceArray_v1;
-      subtractArrays_v1: IsubtractArrays_v1;
-      deepEquals: deepEquals;
-      difference: difference;
-    }
-    namespace ArrayUtils {
-      namespace MapCallbacks {}
-    }
-  }
-}
+// declare module "../../_000-no-dependencies/JavaScript" {
+//   namespace JavaScript {
+//     interface ArrayUtils {
+//       ExtendedArray: typeof ExtendedArray;
+//       TupleArray: typeof TupleArray;
+//       ensureArray: isArray;
+//       filterArray: filterArray;
+//       grabPartToEdit: grabber;
+//       substituteEditedPart: substituter;
+//       splicer: splicer;
+//       changePosition_v1: IchangePosition_v1;
+//       checkArrayElementsConstructor_v1: IcheckArrayElementsConstructor_v1;
+//       checkArraysContent_v1: IcheckArraysContent_v1;
+//       checkObjectConstructor_v1: IcheckObjectConstructor_v1;
+//       extractSameElementsFromArray_v1: IextractSameElementsFromArray_v1;
+//       hasArrayObjectElements: IhasArrayObjectElements_v1;
+//       isArrayEmpty: IisArrayEmpty_v1;
+//       popFirst: IpopFirst_v1;
+//       removeSpaceFromString: IremoveSpaceFromString_v1;
+//       sliceArray: IsliceArray_v1;
+//       subtractArrays_v1: IsubtractArrays_v1;
+//       deepEquals: deepEquals;
+//       difference: difference;
+//     }
+//     namespace ArrayUtils {
+//       namespace MapCallbacks {}
+//     }
+//   }
+// }
 
 declare module "./ArrayUtils" {
   type AddToTuple<T extends any[], U> = [...T, U];
