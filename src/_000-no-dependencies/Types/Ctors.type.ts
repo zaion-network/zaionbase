@@ -26,6 +26,7 @@ declare module "./Ctors.type" {
 
     type InferInstance<t extends new (...args: any) => any> =
       Class.InferInstance<t>;
+
     type flattenCtor<C> = C extends Ctor<infer A, infer V>
       ? [A, flatten<V>]
       : never;
