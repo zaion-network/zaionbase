@@ -4,16 +4,14 @@ import { ExtendedArray } from "../ArrayUtils/ExtendedArray";
 import { ExtendedObject } from "../ObjectUtils/ExtendedObject";
 import { stringifyMap } from "./stringifyMap";
 
-declare module "./ExtendedMap" {
-  interface ExtendedMap<K, V> extends Map<K, V> {
-    stringify(): string;
-  }
-}
+// export interface ExtendedMap<T, K extends keyof T> extends Map<K, T[K]> {
+//   stringify(): string;
+// }
 
-export class ExtendedMap<K, V> extends Map<K, V> implements ExtendedMap<K, V> {
-  constructor(iterable?: Iterable<readonly [K, V]>) {
-    super(iterable);
-  }
+export class ExtendedMap<T>
+  extends Map
+  implements fromMapToArray.MapFromObj<T>
+{
   stringify() {
     return stringifyMap(this, "object");
   }
@@ -21,7 +19,18 @@ export class ExtendedMap<K, V> extends Map<K, V> implements ExtendedMap<K, V> {
     return new ExtendedObject(fromMapToObj(this as Map<string, any>));
   }
   toArr() {
-    return new ExtendedArray(...fromMapToArray(this as Map<string, any>));
+    const newarray = new ExtendedArray();
+    fromMapToArray(this as fromMapToArray.MapFromArray).forEach(e =>
+      newarray.push(e)
+    );
+    return newarray;
+  }
+  set<K extends keyof T>(key: K, value: T[K]): this {
+    super.set(key, value);
+    return this;
+  }
+  get<K extends keyof T>(key: K): T[K] {
+    return super.get(key);
   }
 }
 export namespace ExtendedMap {}
