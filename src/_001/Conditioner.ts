@@ -1,5 +1,9 @@
 import { errorCb } from "../_000-no-dependencies/ErrorHandler";
 import { FunctionTypes } from "../_000-no-dependencies/FunctionTypes";
+import { createErrorMap as cem } from "./Conditioner/createErrorMap";
+import { createTrueFalseMap as ctfm } from "./Conditioner/createTrueFalseMap";
+import { undefinedFalseMap as ufm } from "./Conditioner/undefinedFalseMap";
+import { undefinedField as uf } from "./Conditioner/undefinedField";
 
 export interface Conditioner {
   boolean: Conditioner.Boolean;
@@ -113,47 +117,11 @@ export namespace Conditioner {
 
   /////////////// MAP
 
-  interface createErrorMap {
-    (message: string): Map<boolean, GenericFunction<any, any>>;
-  }
-  export const createErrorMap: createErrorMap = message => {
-    const map = new Map();
-    map.set(false, errorCb(message));
-    map.set(true, () => {});
-    return map;
-  };
+  export const createErrorMap: cem.createErrorMap = cem;
 
-  interface createTrueFalseMap {
-    (iftrue: actionAndArgs, iffalse: actionAndArgs): Map<any, any>;
-  }
-  export const createTrueFalseMap: createTrueFalseMap = (iftrue, iffalse) => {
-    const map = new Map();
-    map.set(true, iftrue);
-    map.set(false, iffalse);
-    return map;
-  };
+  export const createTrueFalseMap: ctfm.createTrueFalseMap = ctfm;
 
-  interface undefinedFalseMap {
-    (): Map<any, any>;
-  }
-  const undefinedFalseMap = () => {
-    return new Map().set(undefined, false);
-  };
-
-  interface undefinedField {
-    (
-      bool: boolean,
-      actionAndArgs: [action, any[]],
-      mapped: Map<any, any> | undefined
-    ): any;
-  }
-  const undefinedField: undefinedField = (bool, actionAndArgs, mapped) => {
-    const map = undefinedFalseMap();
-    const map2 = new Map();
-    map2.set(undefined, () => mapped!.get(bool));
-    map2.set(false, () => [actionAndArgs[0], actionAndArgs[1]]);
-    return map2.get(map.get(mapped))();
-  };
+  const undefinedField: uf.undefinedField = uf;
 
   /////////////////
 
