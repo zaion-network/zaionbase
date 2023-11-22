@@ -9,6 +9,8 @@ describe(`${Conditioner.name}`, () => {
       "error"
     );
   });
+});
+describe(`${conditioner.boolean.name}`, () => {
   it(`${conditioner.boolean.name}`, () => {
     type booleanconditions = Conditioner.booleanCondition;
     const cond = true;
