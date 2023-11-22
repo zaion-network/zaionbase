@@ -2,9 +2,6 @@ import { reduceableCondition } from "../Conditioner.type";
 import { createTrueFalseMap } from "./createTrueFalseMap";
 import { undefinedField } from "./undefinedField";
 
-interface reducer {
-  (p: reduceableCondition, c: reduceableCondition): reduceableCondition;
-}
 export const reducer: (
   p: reduceableCondition,
   c: reduceableCondition
@@ -13,3 +10,9 @@ export const reducer: (
   c[1],
   createTrueFalseMap(c[1], undefinedField(...p)),
 ];
+
+export namespace reducer {
+  export interface reducer {
+    (p: reduceableCondition, c: reduceableCondition): reduceableCondition;
+  }
+}
