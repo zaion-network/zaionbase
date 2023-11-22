@@ -15,6 +15,7 @@ export interface Conditioner {
   boolean: Conditioner.Boolean;
   elseIf: Conditioner.ElseIf;
   booleanTrue: Conditioner.BooleanTrue;
+  booleanFalse: Conditioner.BooleanFalse;
 }
 export class Conditioner {
   safeguard: Conditioner.Safeguard = props => {
@@ -43,7 +44,7 @@ export class Conditioner {
     const makeValidations = Conditioner.makeValidations;
     return this.boolean([props[0], makeValidations(ifTrue, doNothing)]);
   };
-  booleanFalse = (
+  booleanFalse: Conditioner.BooleanFalse = (
     ...props: [boolean, [Conditioner.action, Conditioner.args]]
   ) => {
     type condition = [Conditioner.action, Conditioner.args];
@@ -118,6 +119,11 @@ export namespace Conditioner {
     ): ReturnType<Boolean>;
   }
 
+  export interface BooleanFalse {
+    <P extends [boolean, [Conditioner.action, Conditioner.args]]>(
+      ...props: P
+    ): ReturnType<Boolean>;
+  }
   ////////////////
 
   /////////////// MAP
