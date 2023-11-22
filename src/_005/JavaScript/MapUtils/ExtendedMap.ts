@@ -1,7 +1,4 @@
-import {
-  Array as A,
-  Object as O,
-} from "../../../_000-no-dependencies/Types/DataStructures/Mixer.type";
+import { Map as M } from "../../../_000-no-dependencies/Types/DataStructures/Map.type";
 import { fromMapToArray } from "../../../_000-no-dependencies/utils/fromMapToArray";
 import { fromMapToObj } from "../../../_000-no-dependencies/utils/fromMapToObj";
 import { ExtendedArray } from "../ArrayUtils/ExtendedArray";
@@ -23,7 +20,7 @@ export class ExtendedMap<T>
   }
   toObj() {
     type pairObj = this extends ExtendedMap<infer X>
-      ? X extends ExtendedObject.toObj<any>
+      ? X extends ExtendedArray.toObj<any>
         ? X
         : never
       : never;
@@ -43,6 +40,13 @@ export class ExtendedMap<T>
   }
 }
 export namespace ExtendedMap {
-  export type MapFromArray<T extends ExtendedArray.KeyValueArr> = A.toMap<T>;
-  export type MapFromObject<T> = O.toMap<T>;
+  // KeyValue
+  export type KeyValueMap<T extends M.KeyValue> = M.KeyValueMap<T>;
+  // transformers
+  export type toArr<T> = fromMapToArray.fromMapToArray<T>;
+  export type toObj<T> = fromMapToObj.fromMapToObj<T>;
+  // OTHER
+  export type MapFromArray<T extends ExtendedArray.KeyValueArr> =
+    ExtendedArray.toMap<T>;
+  export type MapFromObject<T> = ExtendedObject.toMap<T>;
 }

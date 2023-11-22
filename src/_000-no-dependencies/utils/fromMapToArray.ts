@@ -1,9 +1,6 @@
-import {
-  Map as M,
-  Array as A,
-  Object as O,
-} from "../Types/DataStructures/Mixer.type";
-import { Array as Ar } from "../Types/DataStructures/Array.type";
+import { Array as A } from "../Types/DataStructures/Array.type";
+import { Object as O } from "../Types/DataStructures/Object.type";
+import { Map as M } from "../Types/DataStructures/Map.type";
 import { Pair } from "../Types/DataStructures/Tuple.type";
 
 export function fromMapToArray<M extends A.toMap<any>>(
@@ -23,7 +20,10 @@ export function fromMapToArray<M extends Map<string, any>>(map: M): any {
   return res;
 }
 export namespace fromMapToArray {
-  export type MapFromArray<T extends Ar.KeyValueArr> = A.toMap<T>;
+  // definition
+  export type fromMapToArray<T> = M.toArr<T>;
+  // other
+  export type MapFromArray<T extends A.KeyValueArr> = A.toMap<T>;
   export type MapFromObj<T> = O.toMap2<T>;
-  export type KeyValueArr = Ar.KeyValueArr;
+  export type KeyValueArr = A.KeyValueArr;
 }

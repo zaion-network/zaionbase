@@ -1,22 +1,17 @@
-import { Array as Ar } from "../../../_000-no-dependencies/Types/DataStructures/Array.type";
-import {
-  Object as O,
-  Map as M,
-  Array as A,
-} from "../../../_000-no-dependencies/Types/DataStructures/Mixer.type";
+import { Array as A } from "../../../_000-no-dependencies/Types/DataStructures/Array.type";
 import { fromArrayToMap } from "../../../_000-no-dependencies/utils/fromArrayToMap";
 import { fromArrayToObj } from "../../../_000-no-dependencies/utils/fromArrayToObj";
 import { ExtendedMap } from "../MapUtils/ExtendedMap";
 import { ExtendedObject } from "../ObjectUtils/ExtendedObject";
 
-export interface ExtendedArrayMethods<T extends Ar.KeyValueArr> {
+export interface ExtendedArrayMethods<T extends A.KeyValueArr> {
   toMap(): A.toMap<T>;
   toObj(): A.toObj<T>;
 }
 
 export class Ctor<T extends ExtendedArray.KeyValueArr | [number]>
   extends Array
-  implements ExtendedArrayMethods<T extends Ar.KeyValueArr ? T : never>
+  implements ExtendedArrayMethods<T extends A.KeyValueArr ? T : never>
 {
   constructor(...args: T) {
     super(...(args as any[] | [number]));
@@ -27,7 +22,7 @@ export class Ctor<T extends ExtendedArray.KeyValueArr | [number]>
     return obj;
   }
   toMap() {
-    type pairArr = T extends Ar.KeyValueArr
+    type pairArr = T extends A.KeyValueArr
       ? T extends Iterable<readonly [any, any]>
         ? T
         : never
@@ -47,9 +42,14 @@ export interface ExtendedArray {
 export const ExtendedArray: ExtendedArray = Ctor as ExtendedArray;
 
 export namespace ExtendedArray {
-  export type KeyValueArr = Ar.KeyValueArr;
-  export type ArrayFromObj<T> = O.toArr<T>;
-  export type ArrayFromMap<T> = M.toArr<T>;
+  // KeyValue
+  export type KeyValueArr = A.KeyValueArr;
+  // transformers
+  export type toObj<T extends KeyValueArr> = A.toObj<T>;
+  export type toMap<T extends KeyValueArr> = A.toMap<T>;
+  // OTHER
+  export type ArrayFromObj<T> = ExtendedObject.toArr<T>;
+  export type ArrayFromMap<T> = ExtendedMap.toArr<T>;
   export type inferArrayFromObj<T> =
     ExtendedArray.ArrayFromObj<T> extends ExtendedArray.KeyValueArr
       ? ExtendedArray.ArrayFromObj<T>

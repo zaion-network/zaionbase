@@ -1,16 +1,11 @@
 import { UnionStuff } from "../UnionStuff.type";
-import { Array as A } from "./Array.type";
-import { Object as O } from "./Object.type";
-import { Map as M } from "./Map.type";
-import { Pair } from "./Tuple.type";
-import { primitives } from "../Primitive.type";
-// import { Pair } from "./Tuple.type";
-
-// // -------------------------------------- Object
-// export type KeyValueObj = { [k: PropertyKey]: any };
+import { extractor as e } from "./utils/extractor";
 
 export namespace Object {
-  type checkAndRecurse<T, K extends keyof T> = T[K] extends Pair.KeyValue
+  type checkAndRecurse<
+    T,
+    K extends keyof T
+  > = T[K] extends e.keyValueArrayToUnion.KeyValueArr.Pair.KeyValue
     ? toMap<Array.toObj<[T[K]]>>
     : T[K] extends Array.toMap<infer X>
     ? Array.toMap<X>
@@ -26,7 +21,7 @@ export namespace Object {
   };
 
   // OBJ => TUPLEARR
-  export type toArr<O> = UnionStuff.unionToTuple<O.fromObjetToTupleUnion<O>>;
+  export type toArr<O> = UnionStuff.unionToTuple<e.fromObjetToTupleUnion<O>>;
 
   export namespace Ctors {
     export type TypedMapCtor = new <T>(
@@ -43,23 +38,21 @@ export namespace Object {
 // -------------------------------------- Array
 export namespace Array {
   // TUPLEARR => OBJ
-  type checkAndRecurse<T extends A.KeyValueArr> = T extends Array<any>
-    ? toObj<T>
-    : T extends toMap<infer X>
-    ? toObj<X>
-    : T;
-  export type toObj<T extends A.KeyValueArr> = {
-    [K in A.keysInKeyValueArr<T>]: checkAndRecurse<A.extractor<T, K>>;
+  type checkAndRecurse<T extends e.keyValueArrayToUnion.KeyValueArr> =
+    T extends Array<any> ? toObj<T> : T extends toMap<infer X> ? toObj<X> : T;
+  export type toObj<T extends e.keyValueArrayToUnion.KeyValueArr> = {
+    [K in e.keysInKeyValueArr<T>]: checkAndRecurse<e<T, K>>;
   };
 
   // TUPLEARR => MAP
-  type buildTuple<T extends A.KeyValueArr> = {
-    [K in A.keysInKeyValueArr<T>]: A.extractor<T, K> extends primitives
-      ? A.extractor<T, K>
-      : toMap<A.extractor<T, K>>;
+  type buildTuple<T extends e.keyValueArrayToUnion.KeyValueArr> = {
+    [K in e.keysInKeyValueArr<T>]: e<T, K> extends e.primitive
+      ? e<T, K>
+      : toMap<e<T, K>>;
   };
-  type toMapSub<T extends A.KeyValueArr> = buildTuple<T>;
-  export type toMap<T extends A.KeyValueArr> = Object.toMap<toMapSub<T>>;
+  type toMapSub<T extends e.keyValueArrayToUnion.KeyValueArr> = buildTuple<T>;
+  export type toMap<T extends e.keyValueArrayToUnion.KeyValueArr> =
+    Object.toMap<toMapSub<T>>;
 }
 
 // -------------------------------------- Map
@@ -80,4 +73,15 @@ export namespace Map {
     ? replaceNestedArray<T>
     : never;
   export type toArr<M> = inferArrayPair<M>;
+}
+
+export namespace Mixer {
+  export import extractor = e;
+  export import KeyValueArr = e.KeyValueArr;
+  export import KeyValueObj = e.KeyValueObj;
+  export import Pair = e.Pair;
+  export import fromObjetToTupleUnion = e.fromObjetToTupleUnion;
+  export import keyValueArrayToUnion = e.keyValueArrayToUnion;
+  export import keysInKeyValueArr = e.keysInKeyValueArr;
+  export import primitive = e.primitive;
 }

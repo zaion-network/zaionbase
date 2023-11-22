@@ -1,14 +1,19 @@
-import { Pair } from "./Tuple.type";
+import { Array as A, Mixer } from "./Mixer.type";
+import { extractFromArray as efa } from "./utils/extractFromArray";
+import { extractor as e } from "./utils/extractor";
+import { indexArray as ia } from "./utils/indexArray";
 
 export namespace Array {
+  // KeyValue
+  export type KeyValueArr = Mixer.extractor.keysInKeyValueArr.KeyValueArr;
+
+  // other
   export type arrayToUnion<A extends any[]> = A[number];
 
-  export type extractor<
-    T extends Array.KeyValueArr,
-    K extends PropertyKey
-  > = Extract<keyValueArrayToUnion<T>, Pair.ReadOnlyKeyValue<K>>[1];
-
-  export type KeyValueArr = readonly Pair.KeyValue[];
+  export type extractor<T extends Array.KeyValueArr, K extends PropertyKey> = e<
+    T,
+    K
+  >;
 
   export type keyValueArrayToUnion<T extends KeyValueArr> = T[number];
 
@@ -34,18 +39,12 @@ export namespace Array {
    * ]
    * ```
    */
-  export type indexArray<T extends any[]> = {
-    [K in keyof T]: [K, T[K]];
-  } extends infer U
-    ? U
-    : never;
+  export type indexArray<T extends any[]> = ia<T>;
 
   /**
    * Estrae gli elementi che sono assegnabili a U
    */
-  export type extractFromArray<T, U> = T extends Array<any>
-    ? Extract<T[number], U>
-    : never;
+  export type extractFromArray<T, U> = efa<T, U>;
 
   /**
    * Sostituisce un valore nell'array passato
@@ -57,4 +56,7 @@ export namespace Array {
         }
       : never
     : never;
+
+  export type toMap<T extends KeyValueArr> = A.toMap<T>;
+  export type toObj<T extends KeyValueArr> = A.toObj<T>;
 }

@@ -1,5 +1,5 @@
-import { Array as A } from "../Types/DataStructures/Mixer.type";
 import { Object } from "../Types/DataStructures/Object.type";
+import { Array as A } from "../Types/DataStructures/Array.type";
 
 export function fromArrayToObj<A extends any[]>(array: A): A.toObj<A>;
 export function fromArrayToObj<A extends any[]>(array: A) {
@@ -14,4 +14,9 @@ export function fromArrayToObj<A extends any[]>(array: A) {
     }
   });
   return res;
+}
+export namespace fromArrayToObj {
+  // definition
+  export type fromArrayToObj<T extends A.KeyValueArr> = A.toObj<T>;
+  // other
 }

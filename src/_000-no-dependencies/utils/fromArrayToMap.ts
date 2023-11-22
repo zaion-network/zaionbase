@@ -1,5 +1,5 @@
 import { Pair } from "../Types/DataStructures/Tuple.type";
-import { Array as A } from "../Types/DataStructures/Mixer.type";
+import { Array as A } from "../Types/DataStructures/Array.type";
 
 export function fromArrayToMap<T extends any[]>(
   array: T
@@ -16,4 +16,9 @@ export function fromArrayToMap<T extends any[]>(array: T) {
     }
   });
   return res;
+}
+export namespace fromArrayToMap {
+  // definition
+  // other
+  export type fromArrayToMap<T extends A.KeyValueArr> = A.toMap<T>;
 }
