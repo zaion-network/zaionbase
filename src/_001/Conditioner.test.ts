@@ -3,6 +3,12 @@ import { Conditioner } from "./Conditioner";
 const conditioner = new Conditioner();
 
 describe(`${Conditioner.name}`, () => {
+  it(`${conditioner.safeGuardError.name}`, () => {
+    const condition = true;
+    expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
+      "error"
+    );
+  });
   it(`${conditioner.boolean.name}`, () => {
     type booleanconditions = Conditioner.booleanCondition;
     const cond = true;
@@ -44,11 +50,5 @@ describe(`${Conditioner.name}`, () => {
     const condition = false;
     let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
     expect(res).toEqual("testfalse");
-  });
-  it(`${conditioner.safeGuardError.name}`, () => {
-    const condition = true;
-    expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
-      "error"
-    );
   });
 });
