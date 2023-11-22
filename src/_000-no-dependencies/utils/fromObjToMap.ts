@@ -1,5 +1,5 @@
-import { Object as O, Array as A } from "../Types/DataStructures/Mixer.type";
-import { Array as Ar } from "../Types/DataStructures/Array.type";
+import { Array as A } from "../Types/DataStructures/Array.type";
+import { Object as O } from "../Types/DataStructures/Object.type";
 
 export function fromObjToMap<
   T extends { [k: string]: string | { [k: string]: any } },
@@ -24,7 +24,9 @@ export function fromObjToMap<
   return map;
 }
 export namespace fromObjToMap {
-  export type fromObjToMap<T> = O.toMap2<T>;
-  export type fromArrayToObj<T extends Ar.KeyValueArr> = A.toObj<T>;
-  export type fromArrayToMap<T extends Ar.KeyValueArr> = A.toMap<T>;
+  // definition
+  export type fromObjToMap<T> = O.toMap<T>;
+  // other
+  export type fromArrayToObj<T extends A.KeyValueArr> = A.toObj<T>;
+  export type fromArrayToMap<T extends A.KeyValueArr> = A.toMap<T>;
 }
