@@ -2,6 +2,11 @@ import { describe, it, expect } from "bun:test";
 import { Conditioner } from "./Conditioner";
 const conditioner = new Conditioner();
 
+describe(`${Conditioner.name}`, () => {
+  it(`deve essere esportato`, () => {
+    expect(Conditioner).toBeTruthy();
+  });
+});
 describe(`${conditioner.safeGuardError.name}`, () => {
   it(`${conditioner.safeGuardError.name}`, () => {
     const condition = true;
