@@ -8,6 +8,7 @@ import { makeValidation as mkv } from "./Conditioner/makeValidation";
 import { makeActionAndArgs as mkaa } from "./Conditioner/makeActionAndArgs";
 import { makeReduceable as mkr } from "./Conditioner/makeReduceable";
 import { reducer as r } from "./Conditioner/reducer";
+import { reduceConditions as rc } from "./Conditioner/reduceConditions";
 
 export interface Conditioner {
   boolean: Conditioner.Boolean;
@@ -58,7 +59,6 @@ export namespace Conditioner {
     A extends any[],
     R
   > = FunctionTypes.GenericFunction<A, R>;
-  type inferGenericFunction<F> = FunctionTypes.inferGenericFunction<F>;
   ///////
   export type action = FunctionTypes.AnyFunction;
   export type args = any[];
@@ -71,12 +71,6 @@ export namespace Conditioner {
     B,
     A,
     any[]
-  ];
-
-  type reduceableCondition = [
-    boolean,
-    actionAndArgs,
-    Map<any, any> | undefined
   ];
 
   interface ConditionOperator<
@@ -114,7 +108,7 @@ export namespace Conditioner {
       value: V,
       arr: condition[],
       defaultCondition: actionAndArgs
-    ): ReturnType<reduceConditions>;
+    ): ReturnType<rc.reduceConditions>;
   }
 
   ////////////////
@@ -139,18 +133,7 @@ export namespace Conditioner {
 
   export import reducer = r;
 
-  interface reduceConditions {
-    (arr: condition[], defaultAction: actionAndArgs): any;
-  }
-  export const reduceConditions: reduceConditions = (arr, defaultAction) => {
-    let reduced = arr
-      .map(makeReducable)
-      .reverse()
-      .reduce(reducer, [true, defaultAction, undefined]);
-    let map = reduced[2];
-    let cb = map?.get(arr[0]![0]);
-    return cb[0](...cb[1]);
-  };
+  export import reduceConditions = rc;
 
   export namespace Zionbase {
     type StandardValues = string | number | boolean;
