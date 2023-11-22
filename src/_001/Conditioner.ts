@@ -2,8 +2,11 @@ import { errorCb } from "../_000-no-dependencies/ErrorHandler";
 import { FunctionTypes } from "../_000-no-dependencies/FunctionTypes";
 import { createErrorMap as cem } from "./Conditioner/createErrorMap";
 import { createTrueFalseMap as ctfm } from "./Conditioner/createTrueFalseMap";
-import { undefinedFalseMap as ufm } from "./Conditioner/undefinedFalseMap";
 import { undefinedField as uf } from "./Conditioner/undefinedField";
+import { makeValidations as mkvs } from "./Conditioner/makeValidations";
+import { makeValidation as mkv } from "./Conditioner/makeValidation";
+import { makeActionAndArgs as mkaa } from "./Conditioner/makeActionAndArgs";
+import { makeReduceable as mkr } from "./Conditioner/makeReduceable";
 
 export interface Conditioner {
   boolean: Conditioner.Boolean;
@@ -117,66 +120,21 @@ export namespace Conditioner {
 
   /////////////// MAP
 
-  export const createErrorMap: cem.createErrorMap = cem;
+  export import createErrorMap = cem;
 
-  export const createTrueFalseMap: ctfm.createTrueFalseMap = ctfm;
+  export import createTrueFalseMap = ctfm;
 
-  const undefinedField: uf.undefinedField = uf;
+  export import undefinedField = uf;
 
   /////////////////
 
-  const defaultFalse: inferGenericFunction<any> = () => {};
+  export import makeValidations = mkvs;
 
-  interface makeValidations {
-    <T extends [action, any[]], F extends [action, any[]]>(
-      ifTrue: T,
-      ifFalse?: F | [action, any[]]
-    ): [condition<true, T[0]>, condition<false, F[0]>];
-  }
-  export const makeValidations: makeValidations = (
-    ifTrue,
-    ifFalse = [defaultFalse, []]
-  ) => {
-    const trueval = makeValidation(true, ifTrue[0], ifTrue[1]);
-    const falsval = makeValidation(false, ifFalse[0], ifFalse[1]);
-    return [trueval, falsval];
-  };
+  export import makeValidation = mkv;
 
-  interface makeValidation {
-    <B extends true | false, A extends action>(
-      bool: B,
-      cb: A,
-      args: any[]
-    ): condition<B, inferGenericFunction<A>>;
-  }
-  const makeValidation: makeValidation = <
-    B extends true | false,
-    A extends GenericFunction<any, any>
-  >(
-    bool: B,
-    cb: A,
-    args: any[]
-  ): condition<B, inferGenericFunction<A>> => {
-    const degeneric = <T extends GenericFunction<any, any>>(
-      cb: T
-    ): inferGenericFunction<T> => cb as unknown as inferGenericFunction<T>;
-    let ret = degeneric(cb);
-    return [bool, ret, args];
-  };
+  export import makeActionAndArgs = mkaa;
 
-  interface makeActionAndArgs {
-    (action: action, args: args): actionAndArgs;
-  }
-  export const makeActionAndArgs: makeActionAndArgs = (action, args) => {
-    return [action, args];
-  };
-
-  interface makeReduceable {
-    (arg: condition): reduceableCondition;
-  }
-  export const makeReducable: makeReduceable = arg => {
-    return [arg[0], [arg[1], arg[2]], undefined];
-  };
+  export import makeReducable = mkr;
 
   interface reducer {
     (p: reduceableCondition, c: reduceableCondition): reduceableCondition;
