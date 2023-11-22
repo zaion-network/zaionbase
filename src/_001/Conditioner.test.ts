@@ -1,8 +1,8 @@
 import { describe, it, expect } from "bun:test";
 import { Conditioner } from "./Conditioner";
-const conditiner = new Conditioner();
+const conditioner = new Conditioner();
 
-describe("Conditioner", () => {
+describe(`${Conditioner.name}`, () => {
   it("boolean", () => {
     type booleanconditions = Conditioner.booleanCondition;
     const cond = true;
@@ -19,7 +19,7 @@ describe("Conditioner", () => {
       ],
     ];
 
-    let res = conditiner.boolean(conditions);
+    let res = conditioner.boolean(conditions);
     expect(res).toEqual(0);
   });
   it("multiple conditions", () => {
@@ -31,23 +31,23 @@ describe("Conditioner", () => {
       [condition2, (a: string) => console.log(a), ["condition2"]],
       [condition3, (a: string) => a, ["condition3"]],
     ];
-    let res = conditiner.elseIf("", arr, [a => a, ["test"]]);
+    let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
     expect(res).toEqual("test");
   });
   it("boolean true", () => {
     const condition = true;
     const value = "test2";
-    let res = conditiner.booleanTrue(condition, [a => a, [value]]);
+    let res = conditioner.booleanTrue(condition, [a => a, [value]]);
     expect(res).toEqual(value);
   });
   it("boolean false", () => {
     const condition = false;
-    let res = conditiner.booleanFalse(condition, [a => a, ["testfalse"]]);
+    let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
     expect(res).toEqual("testfalse");
   });
   it("safe guard error", () => {
     const condition = true;
-    expect(() => conditiner.safeGuardError([condition, "error"])).toThrow(
+    expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
       "error"
     );
   });
