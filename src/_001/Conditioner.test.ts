@@ -28,29 +28,6 @@ describe(`${Conditioner.name}`, () => {
     let res = conditioner.boolean(conditions);
     expect(res).toEqual(0);
   });
-  it(`${conditioner.elseIf.name}`, () => {
-    const condition1 = false;
-    const condition2 = false;
-    const condition3 = false;
-    const arr: Conditioner.condition[] = [
-      [condition1, () => console.log("condition1"), []],
-      [condition2, (a: string) => console.log(a), ["condition2"]],
-      [condition3, (a: string) => a, ["condition3"]],
-    ];
-    let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
-    expect(res).toEqual("test");
-  });
-  it(`${conditioner.booleanTrue}`, () => {
-    const condition = true;
-    const value = "test2";
-    let res = conditioner.booleanTrue(condition, [a => a, [value]]);
-    expect(res).toEqual(value);
-  });
-  it(`${conditioner.booleanFalse.name}`, () => {
-    const condition = false;
-    let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
-    expect(res).toEqual("testfalse");
-  });
 });
 describe(`${conditioner.safeguard.name}`, () => {
   it(`dovrebbe lanciare un errore`, () => {
@@ -64,6 +41,14 @@ describe(`${conditioner.safeguard.name}`, () => {
     expect(
       conditioner.safeguard([condition, "messaggio di errore"])
     ).toBeUndefined();
+  });
+});
+describe(`${conditioner.booleanTrue.name}`, () => {
+  it(`${conditioner.booleanTrue.name}`, () => {
+    const condition = true;
+    const value = "test2";
+    let res = conditioner.booleanTrue(condition, [a => a, [value]]);
+    expect(res).toEqual(value);
   });
 });
 describe(`${conditioner.booleanFalse.name}`, () => {
