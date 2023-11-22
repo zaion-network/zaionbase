@@ -1,28 +1,37 @@
+import {
+  Array as A,
+  Object as O,
+} from "../../../_000-no-dependencies/Types/DataStructures/Mixer.type";
 import { fromMapToArray } from "../../../_000-no-dependencies/utils/fromMapToArray";
 import { fromMapToObj } from "../../../_000-no-dependencies/utils/fromMapToObj";
 import { ExtendedArray } from "../ArrayUtils/ExtendedArray";
 import { ExtendedObject } from "../ObjectUtils/ExtendedObject";
 import { stringifyMap } from "./stringifyMap";
 
-// export interface ExtendedMap<T, K extends keyof T> extends Map<K, T[K]> {
-//   stringify(): string;
-// }
-
 export class ExtendedMap<T>
   extends Map
   implements fromMapToArray.MapFromObj<T>
 {
+  constructor(...args: ConstructorParameters<typeof Map<any, any>>) {
+    // non so perché ma il map che viene esteso sembra non aspettarsi
+    // argoment
+    // @ts-expect-error
+    super(...args);
+  }
   stringify() {
     return stringifyMap(this, "object");
   }
   toObj() {
-    return new ExtendedObject(fromMapToObj(this as Map<string, any>));
+    type pairObj = this extends ExtendedMap<infer X>
+      ? X extends ExtendedObject.toObj<any>
+        ? X
+        : never
+      : never;
+    return new ExtendedObject<pairObj>(fromMapToObj(this as Map<string, any>));
   }
   toArr() {
-    const newarray = new ExtendedArray();
-    fromMapToArray(this as fromMapToArray.MapFromArray).forEach(e =>
-      newarray.push(e)
-    );
+    type pairArr = ExtendedArray.inferArrayFromObj<T>;
+    const newarray = new ExtendedArray(...(Array.from(this) as pairArr));
     return newarray;
   }
   set<K extends keyof T>(key: K, value: T[K]): this {
@@ -33,4 +42,7 @@ export class ExtendedMap<T>
     return super.get(key);
   }
 }
-export namespace ExtendedMap {}
+export namespace ExtendedMap {
+  export type MapFromArray<T extends ExtendedArray.KeyValueArr> = A.toMap<T>;
+  export type MapFromObject<T> = O.toMap<T>;
+}
