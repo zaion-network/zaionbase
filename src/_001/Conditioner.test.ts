@@ -29,6 +29,20 @@ describe(`${Conditioner.name}`, () => {
     expect(res).toEqual(0);
   });
 });
+describe(`${conditioner.elseIf.name}`, () => {
+  it(`${conditioner.elseIf.name}`, () => {
+    const condition1 = false;
+    const condition2 = false;
+    const condition3 = false;
+    const arr: Conditioner.condition[] = [
+      [condition1, () => console.log("condition1"), []],
+      [condition2, (a: string) => console.log(a), ["condition2"]],
+      [condition3, (a: string) => a, ["condition3"]],
+    ];
+    let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    expect(res).toEqual("test");
+  });
+});
 describe(`${conditioner.safeguard.name}`, () => {
   it(`dovrebbe lanciare un errore`, () => {
     const condition = false;
