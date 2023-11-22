@@ -1,6 +1,8 @@
 import { describe, it, expect } from "bun:test";
 import { fromMapToObj } from "./fromMapToObj";
-import { Array as A } from "../Types/DataStructures/Mixer.type";
+// import { Array as A } from "../Types/DataStructures/Miiii.type";
+// import { Array as A } from "../Types/DataStructures/Mixer.type";
+import { Array as A } from "../Types/DataStructures/Array.type";
 
 type keyValuePairArr = [["ero", "un"], ["map", "carino"]];
 type pairsMap2 = A.toMap<keyValuePairArr>;

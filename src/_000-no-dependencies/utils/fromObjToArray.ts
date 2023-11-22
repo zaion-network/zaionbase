@@ -1,8 +1,6 @@
 import { Array as A } from "../Types/DataStructures/Mixer.type";
-// import { Object as O } from "../Types/DataStructures/Object.type";
-
 import { Object as O } from "../Types/DataStructures/Object.type";
-import { Array as Aa } from "../Types/DataStructures/Array.type";
+import { Map as M } from "../Types/DataStructures/Map.type";
 
 export function fromObjToArray<
   T extends O.KeyValueObj,
@@ -28,4 +26,9 @@ export function fromObjToArray<
     }
   });
   return array;
+}
+export namespace fromObjToArray {
+  // definition
+  export type fromObjToArray<T> = M.toArr<T>;
+  // other
 }
