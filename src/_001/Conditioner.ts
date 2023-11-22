@@ -7,6 +7,7 @@ import { makeValidations as mkvs } from "./Conditioner/makeValidations";
 import { makeValidation as mkv } from "./Conditioner/makeValidation";
 import { makeActionAndArgs as mkaa } from "./Conditioner/makeActionAndArgs";
 import { makeReduceable as mkr } from "./Conditioner/makeReduceable";
+import { reducer as r } from "./Conditioner/reducer";
 
 export interface Conditioner {
   boolean: Conditioner.Boolean;
@@ -136,17 +137,7 @@ export namespace Conditioner {
 
   export import makeReducable = mkr;
 
-  interface reducer {
-    (p: reduceableCondition, c: reduceableCondition): reduceableCondition;
-  }
-  export const reducer: (
-    p: reduceableCondition,
-    c: reduceableCondition
-  ) => reduceableCondition = (p, c) => [
-    c[0],
-    c[1],
-    createTrueFalseMap(c[1], undefinedField(...p)),
-  ];
+  export import reducer = r;
 
   interface reduceConditions {
     (arr: condition[], defaultAction: actionAndArgs): any;
