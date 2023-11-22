@@ -38,16 +38,29 @@ describe(`${conditioner.boolean.name}`, () => {
 });
 describe(`${conditioner.elseIf.name}`, () => {
   it(`${conditioner.elseIf.name}`, () => {
-    const condition1 = false;
+    const condition1 = true;
     const condition2 = false;
     const condition3 = false;
     const arr: Conditioner.condition[] = [
-      [condition1, () => console.log("condition1"), []],
+      [condition1, a => a, ["condition1"]],
       [condition2, (a: string) => console.log(a), ["condition2"]],
       [condition3, (a: string) => a, ["condition3"]],
     ];
     let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
-    expect(res).toEqual("test");
+    expect(res).toEqual("condition1");
+  });
+  it(`test per path del server`, () => {
+    let path = "myurl.com/some";
+    const home = path === "myurl.com";
+    const some = path === "myurl.com/some";
+    const users = path.includes("myurl/users/");
+    const arr: Conditioner.condition[] = [
+      [home, a => a, ["was home"]],
+      [some, a => a, ["was some"]],
+      [users, a => a, ["was users"]],
+    ];
+    const res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    expect(res).toEqual("was some");
   });
 });
 describe(`${conditioner.safeguard.name}`, () => {
