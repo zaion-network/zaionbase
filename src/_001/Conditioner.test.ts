@@ -52,3 +52,17 @@ describe(`${Conditioner.name}`, () => {
     expect(res).toEqual("testfalse");
   });
 });
+describe(`${conditioner.safeguard.name}`, () => {
+  it(`dovrebbe lanciare un errore`, () => {
+    const condition = false;
+    expect(() =>
+      conditioner.safeguard([condition, "messaggio di errore"])
+    ).toThrow();
+  });
+  it(`dovrebbe lanciare continuare ritornando undefined`, () => {
+    const condition = true;
+    expect(
+      conditioner.safeguard([condition, "messaggio di errore"])
+    ).toBeUndefined();
+  });
+});
