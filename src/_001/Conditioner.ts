@@ -11,14 +11,19 @@ import { reducer as r } from "./Conditioner/reducer";
 import { reduceConditions as rc } from "./Conditioner/reduceConditions";
 
 export interface Conditioner {
-  boolean: Conditioner.Boolean;
   safeguard: Conditioner.Safeguard;
+  boolean: Conditioner.Boolean;
   elseIf: Conditioner.ElseIf;
+  booleanTrue: Conditioner.BooleanTrue;
 }
 export class Conditioner {
   safeguard: Conditioner.Safeguard = props => {
     const map = Conditioner.createErrorMap(props[1]);
     return map.get(props[0])!();
+  };
+  safeGuardError: Conditioner.Safeguard = props => {
+    const existAnalysys = errorCb(props[1]);
+    return this.booleanFalse(!props[0], [existAnalysys, []]);
   };
   boolean: Conditioner.Boolean = props => {
     const map = new Map();
@@ -26,7 +31,10 @@ export class Conditioner {
     map.set(props[1][1][0], [props[1][1][1], props[1][1][2]]);
     return map.get(props[0])[0](...map.get(props[0])[1]);
   };
-  booleanTrue = (
+  elseIf: Conditioner.ElseIf = (_, arr, defaultCondition) => {
+    return Conditioner.reduceConditions(arr, defaultCondition);
+  };
+  booleanTrue: Conditioner.BooleanTrue = (
     ...props: [boolean, [Conditioner.action, Conditioner.args]]
   ) => {
     type condition = [Conditioner.action, Conditioner.args];
@@ -43,13 +51,6 @@ export class Conditioner {
     const ifFalse: condition = [props[1][0], props[1][1]];
     const makeValidations = Conditioner.makeValidations;
     return this.boolean([props[0], makeValidations(doNothing, ifFalse)]);
-  };
-  safeGuardError: Conditioner.Safeguard = props => {
-    const existAnalysys = errorCb(props[1]);
-    return this.booleanFalse(!props[0], [existAnalysys, []]);
-  };
-  elseIf: Conditioner.ElseIf = (_, arr, defaultCondition) => {
-    return Conditioner.reduceConditions(arr, defaultCondition);
   };
 }
 export namespace Conditioner {
@@ -109,6 +110,12 @@ export namespace Conditioner {
       arr: condition[],
       defaultCondition: actionAndArgs
     ): ReturnType<rc.reduceConditions>;
+  }
+
+  export interface BooleanTrue {
+    <P extends [boolean, [Conditioner.action, Conditioner.args]]>(
+      ...props: P
+    ): ReturnType<Boolean>;
   }
 
   ////////////////
