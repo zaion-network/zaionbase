@@ -1,13 +1,15 @@
 import { Pair } from "./Tuple.type";
 import { Array as A } from "./Mixer.type";
+import { extractFromArray as efa } from "./utils/extractFromArray";
+import { extractor as e } from "./utils/extractor";
 
 export namespace Array {
   export type arrayToUnion<A extends any[]> = A[number];
 
-  export type extractor<
-    T extends Array.KeyValueArr,
-    K extends PropertyKey
-  > = Extract<keyValueArrayToUnion<T>, Pair.ReadOnlyKeyValue<K>>[1];
+  export type extractor<T extends Array.KeyValueArr, K extends PropertyKey> = e<
+    T,
+    K
+  >;
 
   export type KeyValueArr = readonly Pair.KeyValue[];
 
@@ -44,9 +46,7 @@ export namespace Array {
   /**
    * Estrae gli elementi che sono assegnabili a U
    */
-  export type extractFromArray<T, U> = T extends Array<any>
-    ? Extract<T[number], U>
-    : never;
+  export type extractFromArray<T, U> = efa<T, U>;
 
   /**
    * Sostituisce un valore nell'array passato
