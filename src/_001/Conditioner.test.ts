@@ -66,3 +66,10 @@ describe(`${conditioner.safeguard.name}`, () => {
     ).toBeUndefined();
   });
 });
+describe(`${conditioner.booleanFalse.name}`, () => {
+  it(`dovrebbe tornare il valore nell'array`, () => {
+    const condition = false;
+    let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
+    expect(res).toEqual("testfalse");
+  });
+});
