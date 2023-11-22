@@ -3,7 +3,7 @@ import { Conditioner } from "./Conditioner";
 const conditioner = new Conditioner();
 
 describe(`${Conditioner.name}`, () => {
-  it("boolean", () => {
+  it(`${conditioner.boolean.name}`, () => {
     type booleanconditions = Conditioner.booleanCondition;
     const cond = true;
     const cbTrue = (mes: string) => {
@@ -22,7 +22,7 @@ describe(`${Conditioner.name}`, () => {
     let res = conditioner.boolean(conditions);
     expect(res).toEqual(0);
   });
-  it("multiple conditions", () => {
+  it(`${conditioner.elseIf.name}`, () => {
     const condition1 = false;
     const condition2 = false;
     const condition3 = false;
@@ -34,18 +34,18 @@ describe(`${Conditioner.name}`, () => {
     let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
     expect(res).toEqual("test");
   });
-  it("boolean true", () => {
+  it(`${conditioner.booleanTrue}`, () => {
     const condition = true;
     const value = "test2";
     let res = conditioner.booleanTrue(condition, [a => a, [value]]);
     expect(res).toEqual(value);
   });
-  it("boolean false", () => {
+  it(`${conditioner.booleanFalse.name}`, () => {
     const condition = false;
     let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
     expect(res).toEqual("testfalse");
   });
-  it("safe guard error", () => {
+  it(`${conditioner.safeGuardError.name}`, () => {
     const condition = true;
     expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
       "error"
