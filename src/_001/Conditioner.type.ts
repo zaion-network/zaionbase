@@ -11,3 +11,9 @@ export type condition<B extends true | false = boolean, A = action> = [
   A,
   any[]
 ];
+
+export type reduceableCondition = [
+  boolean,
+  actionAndArgs,
+  Map<any, any> | undefined
+];
