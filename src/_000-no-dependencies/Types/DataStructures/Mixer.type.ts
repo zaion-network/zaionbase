@@ -1,10 +1,10 @@
 import { UnionStuff } from "../UnionStuff.type";
-import { Array as A } from "./Array.type";
-import { Object as O } from "./Object.type";
-import { Map as M } from "./Map.type";
+import { extractor } from "./utils/extractor";
 import { Pair } from "./Tuple.type";
+import { KeyValueArr } from "./KeyValue";
+import { keysInKeyValueArr } from "./utils/keysInKeyValueArr";
+import { fromObjetToTupleUnion } from "./utils/fromObjectToTupleUnion";
 import { primitives } from "../Primitive.type";
-// import { Pair } from "./Tuple.type";
 
 // // -------------------------------------- Object
 // export type KeyValueObj = { [k: PropertyKey]: any };
@@ -26,7 +26,7 @@ export namespace Object {
   };
 
   // OBJ => TUPLEARR
-  export type toArr<O> = UnionStuff.unionToTuple<O.fromObjetToTupleUnion<O>>;
+  export type toArr<O> = UnionStuff.unionToTuple<fromObjetToTupleUnion<O>>;
 
   export namespace Ctors {
     export type TypedMapCtor = new <T>(
@@ -43,23 +43,23 @@ export namespace Object {
 // -------------------------------------- Array
 export namespace Array {
   // TUPLEARR => OBJ
-  type checkAndRecurse<T extends A.KeyValueArr> = T extends Array<any>
+  type checkAndRecurse<T extends KeyValueArr> = T extends Array<any>
     ? toObj<T>
     : T extends toMap<infer X>
     ? toObj<X>
     : T;
-  export type toObj<T extends A.KeyValueArr> = {
-    [K in A.keysInKeyValueArr<T>]: checkAndRecurse<A.extractor<T, K>>;
+  export type toObj<T extends KeyValueArr> = {
+    [K in keysInKeyValueArr<T>]: checkAndRecurse<extractor<T, K>>;
   };
 
   // TUPLEARR => MAP
-  type buildTuple<T extends A.KeyValueArr> = {
-    [K in A.keysInKeyValueArr<T>]: A.extractor<T, K> extends primitives
-      ? A.extractor<T, K>
-      : toMap<A.extractor<T, K>>;
+  type buildTuple<T extends KeyValueArr> = {
+    [K in keysInKeyValueArr<T>]: extractor<T, K> extends primitives
+      ? extractor<T, K>
+      : toMap<extractor<T, K>>;
   };
-  type toMapSub<T extends A.KeyValueArr> = buildTuple<T>;
-  export type toMap<T extends A.KeyValueArr> = Object.toMap<toMapSub<T>>;
+  type toMapSub<T extends KeyValueArr> = buildTuple<T>;
+  export type toMap<T extends KeyValueArr> = Object.toMap<toMapSub<T>>;
 }
 
 // -------------------------------------- Map
