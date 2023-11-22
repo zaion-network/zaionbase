@@ -1,13 +1,16 @@
-import { Array as A, Object as O } from "../Types/DataStructures/Mixer.type";
-import { Object as Ob } from "../Types/DataStructures/Object.type";
+import { Array as A } from "../Types/DataStructures/Mixer.type";
+// import { Object as O } from "../Types/DataStructures/Object.type";
+
+import { Object as O } from "../Types/DataStructures/Object.type";
+import { Array as Aa } from "../Types/DataStructures/Array.type";
 
 export function fromObjToArray<
-  T extends Ob.KeyValueObj,
+  T extends O.KeyValueObj,
   K extends keyof T,
   V extends T[K] | [K, T[K]]
 >(obj: T): T extends A.toObj<infer A> ? A : [K, V][];
 export function fromObjToArray<
-  T extends Ob.KeyValueObj,
+  T extends O.KeyValueObj,
   K extends keyof T,
   V extends T[K] | [K, T[K]]
 >(obj: T): [K, V][] {
