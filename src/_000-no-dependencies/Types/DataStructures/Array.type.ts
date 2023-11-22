@@ -1,4 +1,5 @@
 import { Pair } from "./Tuple.type";
+import { Array as A } from "./Mixer.type";
 
 export namespace Array {
   export type arrayToUnion<A extends any[]> = A[number];
@@ -57,4 +58,7 @@ export namespace Array {
         }
       : never
     : never;
+
+  export type toMap<T extends KeyValueArr> = A.toMap<T>;
+  export type toObj<T extends KeyValueArr> = A.toObj<T>;
 }

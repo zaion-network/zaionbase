@@ -8,4 +8,7 @@ export namespace Map {
   export type indexedArryFromMap<T> = T extends A.toMap<any>
     ? Ar.indexArray<M.toArr<T>>
     : never;
+
+  export type toArr<T> = M.toArr<T>;
+  export type toObj<T> = M.toObj<T>;
 }
