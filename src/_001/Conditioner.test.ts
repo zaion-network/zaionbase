@@ -2,7 +2,7 @@ import { describe, it, expect } from "bun:test";
 import { Conditioner } from "./Conditioner";
 const conditioner = new Conditioner();
 
-describe(`${Conditioner.name}`, () => {
+describe(`${conditioner.safeGuardError.name}`, () => {
   it(`${conditioner.safeGuardError.name}`, () => {
     const condition = true;
     expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
