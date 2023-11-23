@@ -1,15 +1,30 @@
 import { errorCb } from "../_000-no-dependencies/ErrorHandler";
 import { FunctionTypes } from "../_000-no-dependencies/FunctionTypes";
+import { createErrorMap as cem } from "./Conditioner/createErrorMap";
+import { createTrueFalseMap as ctfm } from "./Conditioner/createTrueFalseMap";
+import { undefinedField as uf } from "./Conditioner/undefinedField";
+import { makeValidations as mkvs } from "./Conditioner/makeValidations";
+import { makeValidation as mkv } from "./Conditioner/makeValidation";
+import { makeActionAndArgs as mkaa } from "./Conditioner/makeActionAndArgs";
+import { makeReduceable as mkr } from "./Conditioner/makeReduceable";
+import { reducer as r } from "./Conditioner/reducer";
+import { reduceConditions as rc } from "./Conditioner/reduceConditions";
 
 export interface Conditioner {
-  boolean: Conditioner.Boolean;
   safeguard: Conditioner.Safeguard;
+  boolean: Conditioner.Boolean;
   elseIf: Conditioner.ElseIf;
+  booleanTrue: Conditioner.BooleanTrue;
+  booleanFalse: Conditioner.BooleanFalse;
 }
 export class Conditioner {
   safeguard: Conditioner.Safeguard = props => {
     const map = Conditioner.createErrorMap(props[1]);
     return map.get(props[0])!();
+  };
+  safeGuardError: Conditioner.Safeguard = props => {
+    const existAnalysys = errorCb(props[1]);
+    return this.booleanFalse(!props[0], [existAnalysys, []]);
   };
   boolean: Conditioner.Boolean = props => {
     const map = new Map();
@@ -17,7 +32,10 @@ export class Conditioner {
     map.set(props[1][1][0], [props[1][1][1], props[1][1][2]]);
     return map.get(props[0])[0](...map.get(props[0])[1]);
   };
-  booleanTrue = (
+  elseIf: Conditioner.ElseIf = (_, arr, defaultCondition) => {
+    return Conditioner.reduceConditions(arr, defaultCondition);
+  };
+  booleanTrue: Conditioner.BooleanTrue = (
     ...props: [boolean, [Conditioner.action, Conditioner.args]]
   ) => {
     type condition = [Conditioner.action, Conditioner.args];
@@ -26,7 +44,7 @@ export class Conditioner {
     const makeValidations = Conditioner.makeValidations;
     return this.boolean([props[0], makeValidations(ifTrue, doNothing)]);
   };
-  booleanFalse = (
+  booleanFalse: Conditioner.BooleanFalse = (
     ...props: [boolean, [Conditioner.action, Conditioner.args]]
   ) => {
     type condition = [Conditioner.action, Conditioner.args];
@@ -34,13 +52,6 @@ export class Conditioner {
     const ifFalse: condition = [props[1][0], props[1][1]];
     const makeValidations = Conditioner.makeValidations;
     return this.boolean([props[0], makeValidations(doNothing, ifFalse)]);
-  };
-  safeGuardError: Conditioner.Safeguard = props => {
-    const existAnalysys = errorCb(props[1]);
-    return this.booleanFalse(!props[0], [existAnalysys, []]);
-  };
-  elseIf: Conditioner.ElseIf = (_, arr, defaultCondition) => {
-    return Conditioner.reduceConditions(arr, defaultCondition);
   };
 }
 export namespace Conditioner {
@@ -50,7 +61,6 @@ export namespace Conditioner {
     A extends any[],
     R
   > = FunctionTypes.GenericFunction<A, R>;
-  type inferGenericFunction<F> = FunctionTypes.inferGenericFunction<F>;
   ///////
   export type action = FunctionTypes.AnyFunction;
   export type args = any[];
@@ -63,12 +73,6 @@ export namespace Conditioner {
     B,
     A,
     any[]
-  ];
-
-  type reduceableCondition = [
-    boolean,
-    actionAndArgs,
-    Map<any, any> | undefined
   ];
 
   interface ConditionOperator<
@@ -106,134 +110,43 @@ export namespace Conditioner {
       value: V,
       arr: condition[],
       defaultCondition: actionAndArgs
-    ): ReturnType<reduceConditions>;
+    ): ReturnType<rc.reduceConditions>;
   }
 
+  export interface BooleanTrue {
+    <P extends [boolean, [Conditioner.action, Conditioner.args]]>(
+      ...props: P
+    ): ReturnType<Boolean>;
+  }
+
+  export interface BooleanFalse {
+    <P extends [boolean, [Conditioner.action, Conditioner.args]]>(
+      ...props: P
+    ): ReturnType<Boolean>;
+  }
   ////////////////
 
   /////////////// MAP
 
-  interface createErrorMap {
-    (message: string): Map<boolean, GenericFunction<any, any>>;
-  }
-  export const createErrorMap: createErrorMap = message => {
-    const map = new Map();
-    map.set(false, errorCb(message));
-    map.set(true, () => {});
-    return map;
-  };
+  export import createErrorMap = cem;
 
-  interface createTrueFalseMap {
-    (iftrue: actionAndArgs, iffalse: actionAndArgs): Map<any, any>;
-  }
-  export const createTrueFalseMap: createTrueFalseMap = (iftrue, iffalse) => {
-    const map = new Map();
-    map.set(true, iftrue);
-    map.set(false, iffalse);
-    return map;
-  };
+  export import createTrueFalseMap = ctfm;
 
-  interface undefinedFalseMap {
-    (): Map<any, any>;
-  }
-  const undefinedFalseMap = () => {
-    return new Map().set(undefined, false);
-  };
-
-  interface undefinedField {
-    (
-      bool: boolean,
-      actionAndArgs: [action, any[]],
-      mapped: Map<any, any> | undefined
-    ): any;
-  }
-  const undefinedField: undefinedField = (bool, actionAndArgs, mapped) => {
-    const map = undefinedFalseMap();
-    const map2 = new Map();
-    map2.set(undefined, () => mapped!.get(bool));
-    map2.set(false, () => [actionAndArgs[0], actionAndArgs[1]]);
-    return map2.get(map.get(mapped))();
-  };
+  export import undefinedField = uf;
 
   /////////////////
 
-  const defaultFalse: inferGenericFunction<any> = () => {};
+  export import makeValidations = mkvs;
 
-  interface makeValidations {
-    <T extends [action, any[]], F extends [action, any[]]>(
-      ifTrue: T,
-      ifFalse?: F | [action, any[]]
-    ): [condition<true, T[0]>, condition<false, F[0]>];
-  }
-  export const makeValidations: makeValidations = (
-    ifTrue,
-    ifFalse = [defaultFalse, []]
-  ) => {
-    const trueval = makeValidation(true, ifTrue[0], ifTrue[1]);
-    const falsval = makeValidation(false, ifFalse[0], ifFalse[1]);
-    return [trueval, falsval];
-  };
+  export import makeValidation = mkv;
 
-  interface makeValidation {
-    <B extends true | false, A extends action>(
-      bool: B,
-      cb: A,
-      args: any[]
-    ): condition<B, inferGenericFunction<A>>;
-  }
-  const makeValidation: makeValidation = <
-    B extends true | false,
-    A extends GenericFunction<any, any>
-  >(
-    bool: B,
-    cb: A,
-    args: any[]
-  ): condition<B, inferGenericFunction<A>> => {
-    const degeneric = <T extends GenericFunction<any, any>>(
-      cb: T
-    ): inferGenericFunction<T> => cb as unknown as inferGenericFunction<T>;
-    let ret = degeneric(cb);
-    return [bool, ret, args];
-  };
+  export import makeActionAndArgs = mkaa;
 
-  interface makeActionAndArgs {
-    (action: action, args: args): actionAndArgs;
-  }
-  export const makeActionAndArgs: makeActionAndArgs = (action, args) => {
-    return [action, args];
-  };
+  export import makeReducable = mkr;
 
-  interface makeReduceable {
-    (arg: condition): reduceableCondition;
-  }
-  export const makeReducable: makeReduceable = arg => {
-    return [arg[0], [arg[1], arg[2]], undefined];
-  };
+  export import reducer = r;
 
-  interface reducer {
-    (p: reduceableCondition, c: reduceableCondition): reduceableCondition;
-  }
-  export const reducer: (
-    p: reduceableCondition,
-    c: reduceableCondition
-  ) => reduceableCondition = (p, c) => [
-    c[0],
-    c[1],
-    createTrueFalseMap(c[1], undefinedField(...p)),
-  ];
-
-  interface reduceConditions {
-    (arr: condition[], defaultAction: actionAndArgs): any;
-  }
-  export const reduceConditions: reduceConditions = (arr, defaultAction) => {
-    let reduced = arr
-      .map(makeReducable)
-      .reverse()
-      .reduce(reducer, [true, defaultAction, undefined]);
-    let map = reduced[2];
-    let cb = map?.get(arr[0]![0]);
-    return cb[0](...cb[1]);
-  };
+  export import reduceConditions = rc;
 
   export namespace Zionbase {
     type StandardValues = string | number | boolean;

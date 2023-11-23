@@ -13,7 +13,7 @@
   "exports": {
     ".": {
       "default": "./dist/index.js",
-      "types": "./scr/index.ts"
+      "types": "./src/index.ts"
     },
     "./map": {
       "default": "./dist/map/index.js",
