@@ -2,7 +2,7 @@ import { actionAndArgs, condition } from "../Conditioner.type";
 import { makeReduceable } from "./makeReduceable";
 import { reducer } from "./reducer";
 
-export const reduceConditions: reduceConditions.reduceConditions = (
+export const reduceConditions: reduceConditions.reduceConditions = async (
   arr,
   defaultAction
 ) => {
@@ -12,7 +12,7 @@ export const reduceConditions: reduceConditions.reduceConditions = (
     .reduce(reducer, [true, defaultAction, undefined]);
   let map = reduced[2];
   let cb = map?.get(arr[0]![0]);
-  return cb[0](...cb[1]);
+  return await cb[0](...cb[1]);
 };
 
 export namespace reduceConditions {
