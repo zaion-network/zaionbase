@@ -37,7 +37,7 @@ describe(`${conditioner.boolean.name}`, () => {
   });
 });
 describe(`${conditioner.elseIf.name}`, () => {
-  it(`${conditioner.elseIf.name}`, () => {
+  it(`${conditioner.elseIf.name}`, async () => {
     const condition1 = true;
     const condition2 = false;
     const condition3 = false;
@@ -46,10 +46,10 @@ describe(`${conditioner.elseIf.name}`, () => {
       [condition2, (a: string) => console.log(a), ["condition2"]],
       [condition3, (a: string) => a, ["condition3"]],
     ];
-    let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    let res = await conditioner.elseIf("", arr, [a => a, ["test"]]);
     expect(res).toEqual("condition1");
   });
-  it(`test per path del server`, () => {
+  it(`test per path del server`, async () => {
     let path = "myurl.com/some";
     const home = path === "myurl.com";
     const some = path === "myurl.com/some";
@@ -59,7 +59,7 @@ describe(`${conditioner.elseIf.name}`, () => {
       [some, a => a, ["was some"]],
       [users, a => a, ["was users"]],
     ];
-    const res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    const res = await conditioner.elseIf("", arr, [a => a, ["test"]]);
     expect(res).toEqual("was some");
   });
 });
