@@ -21,7 +21,6 @@ declare module "./JavaScript" {
     export import MapUtils = MU;
     export import ClassUtils = CU;
     export import JSONUtils = JU;
-    export import Promise_utils = PU;
     export import String_utils = SU;
     export import RegExp_utils = REU;
   }
@@ -39,6 +38,7 @@ JavaScript.String_utils = SU;
 
 export namespace JavaScript {
   export interface JavaScript {}
+  export import Promise_utils = PU;
 
   export namespace ArrayBufferUtils {}
   export namespace AsyncFunction_utils {}
