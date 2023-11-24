@@ -8,7 +8,7 @@ import {
   getKeyInObjOfObjWithFilterMkr,
   makeArrayFromEnum,
 } from "../_005/JavaScript/ObjectUtils";
-import { wait } from "../_005/JavaScript/Promise_Utils";
+import { Promise_utils as PU } from "../_005/JavaScript/Promise_Utils";
 import {
   generateFilename,
   customTag,
@@ -37,6 +37,7 @@ import {
   TupleArray,
   deepEquals,
   difference,
+  ArrayUtils as AU,
 } from "../_005/JavaScript/ArrayUtils";
 import { MapUtils as MU } from "../_005/JavaScript/MapUtils";
 import { BasicClass } from "../_005/JavaScript/ClassUtils";
@@ -55,9 +56,6 @@ declare module "./JavaScript" {
     interface Statements {}
     namespace Statements {}
 
-    interface ArrayUtils {}
-    namespace ArrayUtils {}
-
     interface ObjectUtils {}
     namespace ObjectUtils {}
 
@@ -66,9 +64,6 @@ declare module "./JavaScript" {
 
     interface ClassUtils {}
     namespace ClassUtils {}
-
-    interface Promise_utils {}
-    namespace Promise_utils {}
 
     interface String_utils {}
     namespace String_utils {}
@@ -123,9 +118,9 @@ declare module "./JavaScript" {
     }
   }
 }
-
 export namespace JavaScript {
-  export const avalue = "";
+  export import ArrayUtils = AU;
+  export import Promise_Utils = PU;
 }
 
 // JavaScript.Global_utils.setInterval_utils.Interval;
@@ -142,7 +137,7 @@ export const ObjectUtils: JavaScript.ObjectUtils = {
   makeArrayFromEnum,
   objectkeys,
 };
-export const Promise_Utils: JavaScript.Promise_utils = { wait };
+export const Promise_Utils: JavaScript.Promise_Utils = PU;
 export const String_utils: JavaScript.String_utils = {
   generateFilename,
   customTag,
@@ -152,7 +147,7 @@ export const String_utils: JavaScript.String_utils = {
 export const RegExp_utils: JavaScript.RegExp_utils = {
   ZionRegExp,
 };
-export const ArrayUtils: JavaScript.ArrayUtils = {
+export const ArrayUtils = {
   changePosition_v1,
   checkArrayElementsConstructor_v1,
   checkArraysContent_v1,
