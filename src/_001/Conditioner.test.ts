@@ -1,9 +1,22 @@
 import { describe, it, expect } from "bun:test";
 import { Conditioner } from "./Conditioner";
-const conditiner = new Conditioner();
+const conditioner = new Conditioner();
 
-describe("Conditioner", () => {
-  it("boolean", () => {
+describe(`${Conditioner.name}`, () => {
+  it(`deve essere esportato`, () => {
+    expect(Conditioner).toBeTruthy();
+  });
+});
+describe(`${conditioner.safeGuardError.name}`, () => {
+  it(`${conditioner.safeGuardError.name}`, () => {
+    const condition = true;
+    expect(() => conditioner.safeGuardError([condition, "error"])).toThrow(
+      "error"
+    );
+  });
+});
+describe(`${conditioner.boolean.name}`, () => {
+  it(`${conditioner.boolean.name}`, () => {
     type booleanconditions = Conditioner.booleanCondition;
     const cond = true;
     const cbTrue = (mes: string) => {
@@ -19,36 +32,63 @@ describe("Conditioner", () => {
       ],
     ];
 
-    let res = conditiner.boolean(conditions);
+    let res = conditioner.boolean(conditions);
     expect(res).toEqual(0);
   });
-  it("multiple conditions", () => {
-    const condition1 = false;
+});
+describe(`${conditioner.elseIf.name}`, () => {
+  it(`${conditioner.elseIf.name}`, () => {
+    const condition1 = true;
     const condition2 = false;
     const condition3 = false;
     const arr: Conditioner.condition[] = [
-      [condition1, () => console.log("condition1"), []],
+      [condition1, a => a, ["condition1"]],
       [condition2, (a: string) => console.log(a), ["condition2"]],
       [condition3, (a: string) => a, ["condition3"]],
     ];
-    let res = conditiner.elseIf("", arr, [a => a, ["test"]]);
-    expect(res).toEqual("test");
+    let res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    expect(res).toEqual("condition1");
   });
-  it("boolean true", () => {
+  it(`test per path del server`, () => {
+    let path = "myurl.com/some";
+    const home = path === "myurl.com";
+    const some = path === "myurl.com/some";
+    const users = path.includes("myurl/users/");
+    const arr: Conditioner.condition[] = [
+      [home, a => a, ["was home"]],
+      [some, a => a, ["was some"]],
+      [users, a => a, ["was users"]],
+    ];
+    const res = conditioner.elseIf("", arr, [a => a, ["test"]]);
+    expect(res).toEqual("was some");
+  });
+});
+describe(`${conditioner.safeguard.name}`, () => {
+  it(`dovrebbe lanciare un errore`, () => {
+    const condition = false;
+    expect(() =>
+      conditioner.safeguard([condition, "messaggio di errore"])
+    ).toThrow();
+  });
+  it(`dovrebbe lanciare continuare ritornando undefined`, () => {
+    const condition = true;
+    expect(
+      conditioner.safeguard([condition, "messaggio di errore"])
+    ).toBeUndefined();
+  });
+});
+describe(`${conditioner.booleanTrue.name}`, () => {
+  it(`${conditioner.booleanTrue.name}`, () => {
     const condition = true;
     const value = "test2";
-    let res = conditiner.booleanTrue(condition, [a => a, [value]]);
+    let res = conditioner.booleanTrue(condition, [a => a, [value]]);
     expect(res).toEqual(value);
   });
-  it("boolean false", () => {
+});
+describe(`${conditioner.booleanFalse.name}`, () => {
+  it(`dovrebbe tornare il valore nell'array`, () => {
     const condition = false;
-    let res = conditiner.booleanFalse(condition, [a => a, ["testfalse"]]);
+    let res = conditioner.booleanFalse(condition, [a => a, ["testfalse"]]);
     expect(res).toEqual("testfalse");
-  });
-  it("safe guard error", () => {
-    const condition = true;
-    expect(() => conditiner.safeGuardError([condition, "error"])).toThrow(
-      "error"
-    );
   });
 });
