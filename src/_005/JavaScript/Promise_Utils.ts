@@ -1,13 +1,4 @@
-// import "../../../../../../JavaScript";
-declare module "../../../../../../JavaScript" {
-  namespace JavaScript {
-    interface Promise_utils {
-      wait: wait.wait;
-    }
-    namespace Promise_utils {}
-  }
-}
-
+import { wait as w } from "./Promise_Utils/utils/wait";
 declare module "./Promise_Utils" {
   namespace wait {
     interface wait {
@@ -18,15 +9,5 @@ declare module "./Promise_Utils" {
 
 export class Promise_utils {}
 export namespace Promise_utils {
-  export const wait: wait.wait = amount => {
-    return new Promise(res => {
-      setTimeout(() => res(true), amount);
-    });
-  };
+  export import wait = w;
 }
-
-export const wait: wait.wait = amount => {
-  return new Promise(res => {
-    setTimeout(() => res(true), amount);
-  });
-};
